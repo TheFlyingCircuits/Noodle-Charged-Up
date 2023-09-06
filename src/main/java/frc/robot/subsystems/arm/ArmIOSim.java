@@ -43,11 +43,8 @@ public class ArmIOSim implements ArmIO {
         appliedVolts = (MathUtil.clamp(volts, -12, 12));
     }
 
-    public void setReference(double value) {
-        // armSim.
-    }
-
     public void updateInputs(ArmIOInputs inputs) {
+        armSim.update(0.02);
         inputs.armPosition = new Rotation2d(armSim.getAngleRads());
         inputs.armRotateRadiansPerSecond = armSim.getVelocityRadPerSec();
         inputs.leftPivotMotorArmVolts = appliedVolts;

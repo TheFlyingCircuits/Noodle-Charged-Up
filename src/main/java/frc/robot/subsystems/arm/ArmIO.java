@@ -25,14 +25,16 @@ public interface ArmIO {
         boolean atBackLimitSwitch = false;
     }
 
+    public default void updateInputs(ArmIOInputs inputs) {};
+
     /** Run the arm pivot motors at the specified voltage
      * @param volts voltage to run motors at. Positive moves the arm "forward" towards front of robot
      */
     public default void setArmVoltage(double volts) {}
-
-    public default void setBreakMode(boolean inBrake) {}
+    // put in armioreal.java
+    public default void setBrakeMode(boolean inBrake) {}
 
     public default void setArmSetpointRadians(double radians) {}
-
+    // put in armioreal.java
     public default void syncRelativeEncodersAndCANCoder() {}
 }

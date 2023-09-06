@@ -119,6 +119,7 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
+        io.updateInputs(inputs);
         if (inputs.atFrontLimitSwitch || inputs.atBackLimitSwitch) {
             io.setArmVoltage(0.0);
         } else {
