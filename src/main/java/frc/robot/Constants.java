@@ -220,8 +220,8 @@ public class Constants {
         public static final double armWidthMeters = Units.inchesToMeters(24);
         public static final double armLengthMeters = Units.inchesToMeters(24);
         
-        public static final double maxDesiredAccelerationRadiansPerSecond = Units.degreesToRadians(90);
-        public static final double maxDesiredVelocityRadiansPerSecond = Units.degreesToRadians(90);
+        public static final double maxDesiredAccelerationDegreesPerSecond = 90;
+        public static final double maxDesiredVelocityDegreesPerSecond = 90;
 
         public static final int encoderID = 0;
 

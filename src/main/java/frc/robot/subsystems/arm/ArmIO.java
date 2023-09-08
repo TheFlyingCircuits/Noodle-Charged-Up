@@ -13,14 +13,13 @@ public interface ArmIO {
     @AutoLog
     public class ArmIOInputs {
         Rotation2d armPosition = new Rotation2d();
-        double armRotateRadiansPerSecond = 0.0;
+        double armRotateDegreesPerSecond = 0.0;
         double leftPivotMotorArmVolts = 0.0;
         double rightPivotMotorArmVolts = 0.0;
         double leftPivotMotorArmCurrentAmps = 0.0;
         double rightPivotMotorArmCurrentAmps = 0.0;
         double leftPivotMotorTempCelsius = 0.0;
         double rightPivotMotorTempCelsius = 0.0;
-        double setpointRadians = 0.0;    
         boolean atFrontLimitSwitch = false;
         boolean atBackLimitSwitch = false;
     }
@@ -31,10 +30,4 @@ public interface ArmIO {
      * @param volts voltage to run motors at. Positive moves the arm "forward" towards front of robot
      */
     public default void setArmVoltage(double volts) {}
-    // put in armioreal.java
-    public default void setBrakeMode(boolean inBrake) {}
-
-    public default void setArmSetpointRadians(double radians) {}
-    // put in armioreal.java
-    public default void syncRelativeEncodersAndCANCoder() {}
 }

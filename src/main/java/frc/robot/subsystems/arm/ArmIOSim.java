@@ -46,7 +46,7 @@ public class ArmIOSim implements ArmIO {
     public void updateInputs(ArmIOInputs inputs) {
         armSim.update(0.02);
         inputs.armPosition = new Rotation2d(armSim.getAngleRads());
-        inputs.armRotateRadiansPerSecond = armSim.getVelocityRadPerSec();
+        inputs.armRotateDegreesPerSecond = Math.toDegrees(armSim.getVelocityRadPerSec());
         inputs.leftPivotMotorArmVolts = appliedVolts;
         inputs.rightPivotMotorArmVolts = appliedVolts;
         inputs.leftPivotMotorArmCurrentAmps = armSim.getCurrentDrawAmps();
@@ -55,7 +55,7 @@ public class ArmIOSim implements ArmIO {
         inputs.leftPivotMotorTempCelsius = 20;
         inputs.rightPivotMotorTempCelsius = 20;
 
-        inputs.atFrontLimitSwitch = Units.degreesToRadians(armSim.getAngleRads()) == Constants.Arm.minAngleDegrees;
-        inputs.atBackLimitSwitch = Units.degreesToRadians(armSim.getAngleRads()) == Constants.Arm.maxAngleDegrees;
+        inputs.atFrontLimitSwitch = armSim.hasHitLowerLimit();
+        inputs.atBackLimitSwitch = armSim.hasHitUpperLimit();
     }
 }

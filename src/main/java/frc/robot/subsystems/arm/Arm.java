@@ -20,31 +20,22 @@ public class Arm extends SubsystemBase {
     private final ArmIO io;
     private final ArmIOInputsAutoLogged inputs;
 
-    private final PIDController velocityController;
-    private final ArmFeedforward feedforward;
+    private PIDController velocityController;
+    private ArmFeedforward feedforward;
+    private TrapezoidProfile trapezoidProfile;
 
     private final Timer timer;
     private double lastTime;
 
     private boolean isMovingToTarget;
-    private boolean armAtDefault;
+    private double setpointDegrees;
 
-    private double setpointRadians;
-    private double targetPositionRadians;
-    private double desiredVelocity;
-    private double currentProfilePosition;
-    private double currentProfileVelocity;
-    private final double maxVelocity;
-    private final double maxAcceleration;
-    private double targetPosition;
 
     private TrapezoidProfile.Constraints motionConstraints;
-    private TrapezoidProfile.State lastProfiledReference;
 
     public Arm(ArmIO io) {
         this.io = io;
         this.inputs = new ArmIOInputsAutoLogged();
-        this.armAtDefault = false;
 
         this.velocityController = new PIDController(
                 Constants.Arm.Kp,
@@ -60,61 +51,50 @@ public class Arm extends SubsystemBase {
         this.timer = new Timer();
         this.lastTime = 0.0;
 
-        this.maxVelocity = Constants.Arm.maxDesiredVelocityRadiansPerSecond;
-        this.maxAcceleration = Constants.Arm.maxDesiredAccelerationRadiansPerSecond;
-
-        this.setpointRadians = 0;
-        this.desiredVelocity = 0;
-        this.targetPosition = 0.0;
-        this.currentProfilePosition = 0.0;
-        this.currentProfileVelocity = 0.0;
-
-        this.motionConstraints = new TrapezoidProfile.Constraints(maxVelocity, maxAcceleration);
-        this.lastProfiledReference = new TrapezoidProfile.State(0, 0);
+        this.motionConstraints = new TrapezoidProfile.Constraints(
+            Constants.Arm.maxDesiredVelocityDegreesPerSecond,
+            Constants.Arm.maxDesiredAccelerationDegreesPerSecond);
     }
 
-    public void setArmPositionRadians(double radians) {
-        this.setpointRadians = MathUtil.clamp(radians, Constants.Arm.minAngleDegrees, Constants.Arm.maxAngleDegrees);
+    public void setArmPositionDegrees(double setpointDegrees) {
+        setpointDegrees = MathUtil.clamp(setpointDegrees, Constants.Arm.minAngleDegrees, Constants.Arm.maxAngleDegrees);
+        this.setpointDegrees = setpointDegrees;
+
+        trapezoidProfile = new TrapezoidProfile(
+            motionConstraints,
+            new TrapezoidProfile.State(
+                setpointDegrees, 0.0
+            ),
+            new TrapezoidProfile.State(
+                inputs.armPosition.getDegrees(), inputs.armRotateDegreesPerSecond
+            ));
+
+        timer.reset();
+        timer.start();
+
+        isMovingToTarget = true;
     }
 
     public void setArmPosition(ArmPosition position) {
         switch (position) {
             case Intake:
-                setpointRadians = Constants.Arm.intakePositionRadians;
+                setpointDegrees = Constants.Arm.intakePositionRadians;
                 break;
             case Low:
-                setpointRadians = Constants.Arm.lowPositionRadians;
+                setpointDegrees = Constants.Arm.lowPositionRadians;
                 break;
             case Mid:
-                setpointRadians = Constants.Arm.midPositionRadians;
+                setpointDegrees = Constants.Arm.midPositionRadians;
                 break;
             case High:
-                setpointRadians = Constants.Arm.highPositionRadians;
+                setpointDegrees = Constants.Arm.highPositionRadians;
                 break;
             case Default:
             default:
-                setpointRadians = Constants.Arm.defaultPositionRadians;
+                setpointDegrees = Constants.Arm.defaultPositionRadians;
                 break;
         }
-        lastProfiledReference = new TrapezoidProfile.State(currentProfilePosition, currentProfileVelocity);
-    }
-
-    public void updateMotionProfile() {
-        double currentTime = Timer.getFPGATimestamp();
-        double dt = currentTime - lastTime;
-
-        TrapezoidProfile profile = new TrapezoidProfile(
-            motionConstraints,
-            new TrapezoidProfile.State(targetPosition, 0),
-            lastProfiledReference
-        );
-
-        TrapezoidProfile.State newState = profile.calculate(dt);
-        currentProfilePosition = newState.position;
-        currentProfileVelocity = newState.velocity;
-
-        lastProfiledReference = newState;
-        lastTime = currentTime;
+        setArmPositionDegrees(setpointDegrees);
     }
 
     @Override
@@ -123,7 +103,10 @@ public class Arm extends SubsystemBase {
         if (inputs.atFrontLimitSwitch || inputs.atBackLimitSwitch) {
             io.setArmVoltage(0.0);
         } else {
-            io.setArmSetpointRadians(setpointRadians);
+            io.setArmVoltage(
+                feedforward.calculate(currentProfilePosition, currentProfileVelocity)
+                
+                );
         }
     }
 }
