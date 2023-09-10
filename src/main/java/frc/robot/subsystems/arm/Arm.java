@@ -56,6 +56,10 @@ public class Arm extends SubsystemBase {
             Constants.Arm.maxDesiredAccelerationDegreesPerSecond);
     }
 
+    /**
+     * Generates a new trapezoidal profile for the arm to follow.
+     * @param setpointDegrees - Angular position, in degrees of the arm. An angle of 0 represents a completely horizontal, forward-facing arm.
+     */
     public void setArmPositionDegrees(double setpointDegrees) {
         setpointDegrees = MathUtil.clamp(setpointDegrees, Constants.Arm.minAngleDegrees, Constants.Arm.maxAngleDegrees);
         this.setpointDegrees = setpointDegrees;
@@ -97,16 +101,48 @@ public class Arm extends SubsystemBase {
         setArmPositionDegrees(setpointDegrees);
     }
 
+    private void setArmDegreesPerSecond(double targetDegreesPerSecond) {
+
+        //TODO: INCORPORATE CUSTOM POSITION FEEDBACK RATHER THAN USING PIDCONTROLLER INTEGRAL IN ORDER TO AVOID INTEGRAL WINDUP
+        double pidOutputVolts = velocityController.calculate(inputs.armRotateDegreesPerSecond, targetDegreesPerSecond);
+        double feedforwardOutputVolts = feedforward.calculate(inputs.armPosition.getRadians(), targetDegreesPerSecond);
+
+        double totalOutputVolts = pidOutputVolts + feedforwardOutputVolts;
+
+        if ((inputs.atBackLimitSwitch && totalOutputVolts < 0) || (inputs.atFrontLimitSwitch && totalOutputVolts > 0)) {
+            totalOutputVolts = 0;
+        }
+
+        io.setArmVoltage(totalOutputVolts);
+    }
+
+    /**
+     * Calculates desired instantaneous velocity of the arm based off of the trapezoidal motion profile,
+     * then calls setArmDegreesPerSecond to execute this velocity.
+     */
+    private void followTrapezoidProfile() {
+
+        //holding position if no trapezoid profile is active
+        if (!isMovingToTarget) {
+            setArmDegreesPerSecond(0);
+            return;
+        }
+
+        //ends trapezoidal profile if reached desired position
+        if (trapezoidProfile.isFinished(timer.get()) && (Math.abs(inputs.armPosition.getDegrees() - setpointDegrees) <= 0.005)) {
+            isMovingToTarget = false;
+            return;
+        }
+
+        //otherwise, follow trapezoidal profile normally
+        double desiredDegreesPerSecond = trapezoidProfile.calculate(timer.get()).velocity;
+
+        setArmDegreesPerSecond(desiredDegreesPerSecond);
+    }
+
     @Override
     public void periodic() {
         io.updateInputs(inputs);
-        if (inputs.atFrontLimitSwitch || inputs.atBackLimitSwitch) {
-            io.setArmVoltage(0.0);
-        } else {
-            io.setArmVoltage(
-                feedforward.calculate(currentProfilePosition, currentProfileVelocity)
-                
-                );
-        }
+        followTrapezoidProfile();
     }
 }

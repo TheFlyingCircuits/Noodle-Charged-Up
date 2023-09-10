@@ -23,10 +23,10 @@ public class ArmIOSim implements ArmIO {
         DCMotor.getNeo550(2),
         Constants.Arm.gearReduction,
         // Converts from PSI to kg/m^2
-        (645.084*6894.76),
+        (645.084*6894.76), //TODO: wtf????
         Units.inchesToMeters(19.25),
-        Units.degreesToRadians(195),
-        Units.degreesToRadians(45),
+        Units.degreesToRadians(-20),
+        Units.degreesToRadians(90),
         true
         );
 
