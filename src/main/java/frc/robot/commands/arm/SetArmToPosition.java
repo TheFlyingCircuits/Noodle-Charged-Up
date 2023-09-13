@@ -10,15 +10,15 @@ import frc.robot.subsystems.arm.Arm;
 public class SetArmToPosition extends CommandBase {
   private Arm arm;
   private double setpoint;
-  public SetArmToPosition(Arm arm, double setpointRadians) {
+  public SetArmToPosition(Arm arm, double setpointDegrees) {
     this.arm = arm;
-    this.setpoint = setpointRadians;
+    this.setpoint = setpointDegrees;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    arm.setArmPositionRadians(setpoint);
+    arm.setArmPositionDegrees(setpoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

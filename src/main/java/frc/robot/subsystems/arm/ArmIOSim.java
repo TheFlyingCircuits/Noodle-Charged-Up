@@ -22,8 +22,8 @@ public class ArmIOSim implements ArmIO {
     private SingleJointedArmSim armSim = new SingleJointedArmSim(
         DCMotor.getNeo550(2),
         Constants.Arm.gearReduction,
-        // Converts from PSI to kg/m^2
-        (645.084*6894.76), //TODO: wtf????
+        // Converts from lb-in^2 to kg-m^2 probably correctly
+        (635.543*0.000292639686), //0.185985103959
         Units.inchesToMeters(19.25),
         Units.degreesToRadians(-20),
         Units.degreesToRadians(90),

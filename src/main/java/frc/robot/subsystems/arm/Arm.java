@@ -4,8 +4,12 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import frc.robot.Constants;
 
 public class Arm extends SubsystemBase {
@@ -30,8 +34,11 @@ public class Arm extends SubsystemBase {
     private boolean isMovingToTarget;
     private double setpointDegrees;
 
-
     private TrapezoidProfile.Constraints motionConstraints;
+
+    private Mechanism2d mech;
+    private MechanismRoot2d mechRoot;
+    private MechanismLigament2d mechArm;
 
     public Arm(ArmIO io) {
         this.io = io;
@@ -54,6 +61,11 @@ public class Arm extends SubsystemBase {
         this.motionConstraints = new TrapezoidProfile.Constraints(
             Constants.Arm.maxDesiredVelocityDegreesPerSecond,
             Constants.Arm.maxDesiredAccelerationDegreesPerSecond);
+
+
+        mech = new Mechanism2d(Constants.Arm.armWidthMeters, Constants.Arm.armLengthMeters);
+        mechRoot = mech.getRoot("armRoot", Units.inchesToMeters(-7.581445), 0);
+        mechArm = mechRoot.append(new MechanismLigament2d("arm", Constants.Arm.armLengthMeters, 90));
     }
 
     /**
@@ -77,6 +89,7 @@ public class Arm extends SubsystemBase {
         timer.start();
 
         isMovingToTarget = true;
+        mechArm.setAngle(setpointDegrees);
     }
 
     public void setArmPosition(ArmPosition position) {
@@ -99,6 +112,7 @@ public class Arm extends SubsystemBase {
                 break;
         }
         setArmPositionDegrees(setpointDegrees);
+        mechArm.setAngle(setpointDegrees);
     }
 
     private void setArmDegreesPerSecond(double targetDegreesPerSecond) {
@@ -144,5 +158,6 @@ public class Arm extends SubsystemBase {
     public void periodic() {
         io.updateInputs(inputs);
         followTrapezoidProfile();
+        // mechArm.setAngle();
     }
 }
