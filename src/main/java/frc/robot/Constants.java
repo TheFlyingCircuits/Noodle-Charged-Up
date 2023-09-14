@@ -236,17 +236,14 @@ public class Constants {
 
         //PID
 
-        public static final double Kp = 0.00;
-        public static final double Ki = 0.00;
-        public static final double Kd = 0.00;
+        public static final double KpVoltsPerDegreePerSecond = 0.00;
+        public static final double KiVoltsPerDegree = 0.00;
+        public static final double KdVoltsPerDegreePerSecondSquared = 0.00;
 
         public static final double Ks = 0.00;
         public static final double Kg = 0.00;
         public static final double Kv = 0.00;
         public static final double Ka = 0.00;
-
-        // lil bro is gonna counteract gravity
-        public static final double Kf = 0.00;
 
 
         public static final double intakePositionRadians = Units.degreesToRadians(0.00);

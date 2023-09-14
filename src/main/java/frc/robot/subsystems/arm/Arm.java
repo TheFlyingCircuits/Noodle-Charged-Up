@@ -45,9 +45,9 @@ public class Arm extends SubsystemBase {
         this.inputs = new ArmIOInputsAutoLogged();
 
         this.velocityController = new PIDController(
-                Constants.Arm.Kp,
-                Constants.Arm.Ki,
-                Constants.Arm.Kd);
+                Constants.Arm.KpVoltsPerDegreePerSecond,
+                Constants.Arm.KiVoltsPerDegree,
+                Constants.Arm.KdVoltsPerDegreePerSecondSquared);
 
         this.feedforward = new ArmFeedforward(
                 Constants.Arm.Ks,
@@ -119,7 +119,7 @@ public class Arm extends SubsystemBase {
 
         //TODO: INCORPORATE CUSTOM POSITION FEEDBACK RATHER THAN USING PIDCONTROLLER INTEGRAL IN ORDER TO AVOID INTEGRAL WINDUP
         double pidOutputVolts = velocityController.calculate(inputs.armRotateDegreesPerSecond, targetDegreesPerSecond);
-        double feedforwardOutputVolts = feedforward.calculate(inputs.armPosition.getRadians(), targetDegreesPerSecond);
+        double feedforwardOutputVolts = feedforward.calculate(inputs.armPosition.getDegrees(), targetDegreesPerSecond);
 
         double totalOutputVolts = pidOutputVolts + feedforwardOutputVolts;
 
