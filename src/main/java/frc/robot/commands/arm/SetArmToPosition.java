@@ -18,7 +18,7 @@ public class SetArmToPosition extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    arm.setArmPositionDegrees(setpoint);
+    arm.setArmPositionRadians(setpoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -13,7 +13,8 @@ public interface ArmIO {
     @AutoLog
     public class ArmIOInputs {
         Rotation2d armPosition = new Rotation2d();
-        double armRotateDegreesPerSecond = 0.0;
+        double armPositionRadians = 0.0;
+        double armVelocityRadiansPerSecond = 0.0;
         double leftPivotMotorArmVolts = 0.0;
         double rightPivotMotorArmVolts = 0.0;
         double leftPivotMotorArmCurrentAmps = 0.0;

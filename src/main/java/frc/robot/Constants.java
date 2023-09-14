@@ -213,19 +213,19 @@ public class Constants {
     }
 
     public final static class Arm {
-        public static final double encoderOffsetDegrees = 0.0;
-        public static final double minAngleDegrees = 0.00;
-        public static final double maxAngleDegrees = 100.00;
+        public static final double encoderOffsetRadians = 0.0;
+        public static final double minAngleRadians = Units.degreesToRadians(-20);
+        public static final double maxAngleRadians = Units.degreesToRadians(90);
 
-        public static final double armWidthMeters = Units.inchesToMeters(24);
-        public static final double armLengthMeters = Units.inchesToMeters(24);
+        public static final double armWidthMeters = Units.inchesToMeters(50);
+        public static final double armLengthMeters = Units.inchesToMeters(50);
         
-        public static final double maxDesiredAccelerationDegreesPerSecond = 90;
-        public static final double maxDesiredVelocityDegreesPerSecond = 90;
+        public static final double maxDesiredAccelerationRadiansPerSecond = 1;
+        public static final double maxDesiredVelocityRadiansPerSecond = 1;
 
         public static final int encoderID = 0;
 
-        public static final double gearReduction = 1;
+        public static final double gearReduction = 105;
         // motors
         public static final int leftPivotMotorID = 0;
         public static final boolean leftPivotMotorInverted = true;
@@ -236,14 +236,14 @@ public class Constants {
 
         //PID
 
-        public static final double KpVoltsPerDegreePerSecond = 0.00;
-        public static final double KiVoltsPerDegree = 0.00;
-        public static final double KdVoltsPerDegreePerSecondSquared = 0.00;
+        public static final double KpVoltsPerRadianPerSecond = 0.00;
+        public static final double KiVoltsPerRadian = 0.00;
+        public static final double KdVoltsPerRadianPerSecondSquared = 0.00;
 
-        public static final double Ks = 0.00;
-        public static final double Kg = 0.00;
-        public static final double Kv = 0.00;
-        public static final double Ka = 0.00;
+        public static final double KsVolts = 0.00;
+        public static final double KgVolts = 0.33;
+        public static final double KvVoltsPerRadianPerSecond = 1;
+        public static final double KaVoltsPerRadianPerSecondSquared = 0.0;
 
 
         public static final double intakePositionRadians = Units.degreesToRadians(0.00);

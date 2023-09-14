@@ -16,6 +16,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.drivetrain.JoystickDrive;
+import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.ArmIO;
+import frc.robot.subsystems.arm.ArmIOReal;
+import frc.robot.subsystems.arm.ArmIOSim;
 import frc.robot.subsystems.drive.Drivetrain;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOReal;
@@ -37,6 +41,7 @@ public class RobotContainer {
   // SUBSYSTEMS
   public final Drivetrain drivetrain;
   public final Vision vision;
+  public final Arm arm;
   public final SendableChooser<String> autoChooser = new SendableChooser<>();
 
   public RobotContainer() {
@@ -67,6 +72,8 @@ public class RobotContainer {
 
       vision = new Vision(new VisionIOReal());
 
+      arm = new Arm(new ArmIOReal(0, 0, 0));
+
     } else if (RobotBase.isSimulation()) {
       drivetrain = new Drivetrain(
           new GyroIOSim(),
@@ -77,6 +84,8 @@ public class RobotContainer {
 
       vision = new Vision(new VisionIO() {
       });
+
+      arm = new Arm(new ArmIOSim());
 
     } else {
       drivetrain = new Drivetrain(
@@ -94,6 +103,7 @@ public class RobotContainer {
       vision = new Vision(new VisionIO() {
       });
 
+      arm = new Arm(new ArmIO() {});
     }
 
     configureBindings();
@@ -111,7 +121,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     controller.y().onTrue(new InstantCommand(drivetrain::zeroYaw));
-
+    controller.button(1).onTrue(new InstantCommand(arm::setArmPosition45Degrees));
   }
 
   public Command getAutonomousCommand() {

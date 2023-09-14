@@ -25,8 +25,8 @@ public class ArmIOSim implements ArmIO {
         // Converts from lb-in^2 to kg-m^2 probably correctly
         (635.543*0.000292639686), //0.185985103959
         Units.inchesToMeters(19.25),
-        Units.degreesToRadians(-20),
-        Units.degreesToRadians(90),
+        Constants.Arm.minAngleRadians,
+        Constants.Arm.maxAngleRadians,
         true
         );
 
@@ -46,7 +46,8 @@ public class ArmIOSim implements ArmIO {
     public void updateInputs(ArmIOInputs inputs) {
         armSim.update(0.02);
         inputs.armPosition = new Rotation2d(armSim.getAngleRads());
-        inputs.armRotateDegreesPerSecond = Math.toDegrees(armSim.getVelocityRadPerSec());
+        inputs.armPositionRadians = inputs.armPosition.getRadians();
+        inputs.armVelocityRadiansPerSecond = armSim.getVelocityRadPerSec();
         inputs.leftPivotMotorArmVolts = appliedVolts;
         inputs.rightPivotMotorArmVolts = appliedVolts;
         inputs.leftPivotMotorArmCurrentAmps = armSim.getCurrentDrawAmps();

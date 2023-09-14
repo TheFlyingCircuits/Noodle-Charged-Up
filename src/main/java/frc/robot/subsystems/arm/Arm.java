@@ -1,5 +1,7 @@
 package frc.robot.subsystems.arm;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -32,7 +34,7 @@ public class Arm extends SubsystemBase {
     private double lastTime;
 
     private boolean isMovingToTarget;
-    private double setpointDegrees;
+    private double setpointRadians;
 
     private TrapezoidProfile.Constraints motionConstraints;
 
@@ -45,81 +47,83 @@ public class Arm extends SubsystemBase {
         this.inputs = new ArmIOInputsAutoLogged();
 
         this.velocityController = new PIDController(
-                Constants.Arm.KpVoltsPerDegreePerSecond,
-                Constants.Arm.KiVoltsPerDegree,
-                Constants.Arm.KdVoltsPerDegreePerSecondSquared);
+                Constants.Arm.KpVoltsPerRadianPerSecond,
+                Constants.Arm.KiVoltsPerRadian,
+                Constants.Arm.KdVoltsPerRadianPerSecondSquared);
 
         this.feedforward = new ArmFeedforward(
-                Constants.Arm.Ks,
-                Constants.Arm.Kg,
-                Constants.Arm.Kv,
-                Constants.Arm.Ka);
+                Constants.Arm.KsVolts,
+                Constants.Arm.KgVolts,
+                Constants.Arm.KvVoltsPerRadianPerSecond,
+                Constants.Arm.KaVoltsPerRadianPerSecondSquared);
 
         this.timer = new Timer();
         this.lastTime = 0.0;
 
         this.motionConstraints = new TrapezoidProfile.Constraints(
-            Constants.Arm.maxDesiredVelocityDegreesPerSecond,
-            Constants.Arm.maxDesiredAccelerationDegreesPerSecond);
+            Constants.Arm.maxDesiredVelocityRadiansPerSecond,
+            Constants.Arm.maxDesiredAccelerationRadiansPerSecond);
 
 
         mech = new Mechanism2d(Constants.Arm.armWidthMeters, Constants.Arm.armLengthMeters);
-        mechRoot = mech.getRoot("armRoot", Units.inchesToMeters(-7.581445), 0);
+        mechRoot = mech.getRoot("armRoot", Units.inchesToMeters(5), Units.inchesToMeters(5));
         mechArm = mechRoot.append(new MechanismLigament2d("arm", Constants.Arm.armLengthMeters, 90));
     }
 
     /**
      * Generates a new trapezoidal profile for the arm to follow.
-     * @param setpointDegrees - Angular position, in degrees of the arm. An angle of 0 represents a completely horizontal, forward-facing arm.
+     * @param setpointRadians - Angular position, in radians of the arm. An angle of 0 represents a completely horizontal, forward-facing arm.
      */
-    public void setArmPositionDegrees(double setpointDegrees) {
-        setpointDegrees = MathUtil.clamp(setpointDegrees, Constants.Arm.minAngleDegrees, Constants.Arm.maxAngleDegrees);
-        this.setpointDegrees = setpointDegrees;
+    public void setArmPositionRadians(double setpointRadians) {
+        setpointRadians = MathUtil.clamp(setpointRadians, Constants.Arm.minAngleRadians, Constants.Arm.maxAngleRadians);
+        this.setpointRadians = setpointRadians;
 
         trapezoidProfile = new TrapezoidProfile(
             motionConstraints,
             new TrapezoidProfile.State(
-                setpointDegrees, 0.0
+                setpointRadians, 0.0
             ),
             new TrapezoidProfile.State(
-                inputs.armPosition.getDegrees(), inputs.armRotateDegreesPerSecond
+                inputs.armPosition.getRadians(), inputs.armVelocityRadiansPerSecond
             ));
 
         timer.reset();
         timer.start();
 
         isMovingToTarget = true;
-        mechArm.setAngle(setpointDegrees);
+    }
+
+    public void setArmPosition45Degrees() {
+        setArmPositionRadians(Math.PI/4);
     }
 
     public void setArmPosition(ArmPosition position) {
         switch (position) {
             case Intake:
-                setpointDegrees = Constants.Arm.intakePositionRadians;
+                setpointRadians = Constants.Arm.intakePositionRadians;
                 break;
             case Low:
-                setpointDegrees = Constants.Arm.lowPositionRadians;
+                setpointRadians = Constants.Arm.lowPositionRadians;
                 break;
             case Mid:
-                setpointDegrees = Constants.Arm.midPositionRadians;
+                setpointRadians = Constants.Arm.midPositionRadians;
                 break;
             case High:
-                setpointDegrees = Constants.Arm.highPositionRadians;
+                setpointRadians = Constants.Arm.highPositionRadians;
                 break;
             case Default:
             default:
-                setpointDegrees = Constants.Arm.defaultPositionRadians;
+                setpointRadians = Constants.Arm.defaultPositionRadians;
                 break;
         }
-        setArmPositionDegrees(setpointDegrees);
-        mechArm.setAngle(setpointDegrees);
+        setArmPositionRadians(setpointRadians);
     }
 
-    private void setArmDegreesPerSecond(double targetDegreesPerSecond) {
+    private void setArmRadiansPerSecond(double targetRadiansPerSecond) {
 
         //TODO: INCORPORATE CUSTOM POSITION FEEDBACK RATHER THAN USING PIDCONTROLLER INTEGRAL IN ORDER TO AVOID INTEGRAL WINDUP
-        double pidOutputVolts = velocityController.calculate(inputs.armRotateDegreesPerSecond, targetDegreesPerSecond);
-        double feedforwardOutputVolts = feedforward.calculate(inputs.armPosition.getDegrees(), targetDegreesPerSecond);
+        double pidOutputVolts = velocityController.calculate(inputs.armVelocityRadiansPerSecond, targetRadiansPerSecond);
+        double feedforwardOutputVolts = feedforward.calculate(inputs.armPosition.getRadians(), targetRadiansPerSecond);
 
         double totalOutputVolts = pidOutputVolts + feedforwardOutputVolts;
 
@@ -132,32 +136,37 @@ public class Arm extends SubsystemBase {
 
     /**
      * Calculates desired instantaneous velocity of the arm based off of the trapezoidal motion profile,
-     * then calls setArmDegreesPerSecond to execute this velocity.
+     * then calls setArmRadiansPerSecond() to execute this velocity.
      */
     private void followTrapezoidProfile() {
 
         //holding position if no trapezoid profile is active
         if (!isMovingToTarget) {
-            setArmDegreesPerSecond(0);
+            setArmRadiansPerSecond(0);
             return;
         }
 
         //ends trapezoidal profile if reached desired position
-        if (trapezoidProfile.isFinished(timer.get()) && (Math.abs(inputs.armPosition.getDegrees() - setpointDegrees) <= 0.005)) {
+        if (trapezoidProfile.isFinished(timer.get()) && (Math.abs(inputs.armPosition.getRadians() - setpointRadians) <= 0.005)) {
             isMovingToTarget = false;
             return;
         }
 
         //otherwise, follow trapezoidal profile normally
-        double desiredDegreesPerSecond = trapezoidProfile.calculate(timer.get()).velocity;
+        double desiredRadiansPerSecond = trapezoidProfile.calculate(timer.get()).velocity;
 
-        setArmDegreesPerSecond(desiredDegreesPerSecond);
+        setArmRadiansPerSecond(desiredRadiansPerSecond);
     }
 
     @Override
     public void periodic() {
         io.updateInputs(inputs);
         followTrapezoidProfile();
-        // mechArm.setAngle();
+        mechArm.setAngle(inputs.armPosition.getDegrees());
+
+        Logger.getInstance().processInputs("Arm", inputs);
+
+        Logger.getInstance().recordOutput("/arm/mechanism2d", mech);
+
     }
 }

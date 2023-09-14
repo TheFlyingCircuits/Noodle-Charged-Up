@@ -49,6 +49,7 @@ public class ArmIOReal implements ArmIO {
   private void configEncoders() {
     //TODO: FIND GEAR REDUCTIONS
 
+    //TODO:::::::::: MAKE THESE RADIANS, NOT DEGREES PLS
     //converts from rotation sof the motor to degrees of the arm
     mLeftPivotEncoder.setPositionConversionFactor(Constants.Arm.gearReduction * 360.0);
     mRightPivotEncoder.setPositionConversionFactor(Constants.Arm.gearReduction * 360.0);
@@ -87,7 +88,7 @@ public class ArmIOReal implements ArmIO {
 
     inputs.armPosition = new Rotation2d(
         Units.degreesToRadians(mLeftPivotEncoder.getPosition()));
-    inputs.armRotateDegreesPerSecond = mLeftPivotEncoder.getVelocity();
+    inputs.armVelocityRadiansPerSecond = mLeftPivotEncoder.getVelocity();
     inputs.leftPivotMotorArmVolts = mLeftPivotMotor.getAppliedOutput();
     inputs.rightPivotMotorArmVolts = mRightPivotMotor.getAppliedOutput();
     inputs.leftPivotMotorArmCurrentAmps = mLeftPivotMotor.getOutputCurrent();
