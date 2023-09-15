@@ -96,6 +96,9 @@ public class Arm extends SubsystemBase {
     public void setArmPosition45Degrees() {
         setArmPositionRadians(Math.PI/4);
     }
+    public void setArmPosition0Degrees() {
+        setArmPositionRadians(0);
+    }
 
     public void setArmPosition(ArmPosition position) {
         switch (position) {
@@ -127,7 +130,7 @@ public class Arm extends SubsystemBase {
 
         double totalOutputVolts = pidOutputVolts + feedforwardOutputVolts;
 
-        if ((inputs.atBackLimitSwitch && totalOutputVolts < 0) || (inputs.atFrontLimitSwitch && totalOutputVolts > 0)) {
+        if ((inputs.atBackLimitSwitch && totalOutputVolts > 0) || (inputs.atFrontLimitSwitch && totalOutputVolts < 0)) {
             totalOutputVolts = 0;
         }
 
@@ -162,6 +165,7 @@ public class Arm extends SubsystemBase {
     public void periodic() {
         io.updateInputs(inputs);
         followTrapezoidProfile();
+
         mechArm.setAngle(inputs.armPosition.getDegrees());
 
         Logger.getInstance().processInputs("Arm", inputs);

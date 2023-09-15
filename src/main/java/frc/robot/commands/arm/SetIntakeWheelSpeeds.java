@@ -1,0 +1,31 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.commands.arm;
+
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.subsystems.intake.Intake;
+
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+public class SetIntakeWheelSpeeds extends InstantCommand {
+
+  private Intake intake;
+  double frontRPM;
+  double backRPM;
+
+  public SetIntakeWheelSpeeds(Intake intake, double frontRPM, double backRPM) {
+    addRequirements(intake);
+    this.intake = intake;
+    this.frontRPM=frontRPM;
+    this.backRPM=backRPM;
+  }
+
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    intake.setMotorRPMs(frontRPM, backRPM);
+  }
+}

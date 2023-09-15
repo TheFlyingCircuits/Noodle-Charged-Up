@@ -21,7 +21,7 @@ import frc.robot.Constants.LoggerMode;
 
 public class Robot extends LoggedRobot {
   //turn this true to use the simulator!!
-  public LoggerMode robotMode = LoggerMode.ROBOT_SIM;
+  public LoggerMode robotMode = LoggerMode.ROBOT_REAL;
 
   private Command m_autonomousCommand;
 

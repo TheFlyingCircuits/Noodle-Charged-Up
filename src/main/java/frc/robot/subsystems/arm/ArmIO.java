@@ -13,7 +13,8 @@ public interface ArmIO {
     @AutoLog
     public class ArmIOInputs {
         Rotation2d armPosition = new Rotation2d();
-        double armPositionRadians = 0.0;
+        double leftMotorPositionRadians = 0.0;
+        double rightMotorPositionRadians = 0.0;
         double armVelocityRadiansPerSecond = 0.0;
         double leftPivotMotorArmVolts = 0.0;
         double rightPivotMotorArmVolts = 0.0;
@@ -31,4 +32,6 @@ public interface ArmIO {
      * @param volts voltage to run motors at. Positive moves the arm "forward" towards front of robot
      */
     public default void setArmVoltage(double volts) {}
+
+
 }

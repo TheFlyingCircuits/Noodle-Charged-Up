@@ -24,7 +24,7 @@ public class ArmIOReal implements ArmIO {
   private DigitalInput frontLimitSwitch;
   private DigitalInput backLimitSwitch;
 
-  public ArmIOReal(int leftPivotMotorID, int rightPivotMotorID, int cancoderID) {
+  public ArmIOReal() {
     System.out.println("[Init] Creating " + this.getClass().getName());
 
     // Limit Switches
@@ -40,29 +40,26 @@ public class ArmIOReal implements ArmIO {
     mRightPivotEncoder = mRightPivotMotor.getEncoder();
 
 
-
-
     configMotors();
-    configEncoders();
   }
 
-  private void configEncoders() {
-    //TODO: FIND GEAR REDUCTIONS
-
-    //TODO:::::::::: MAKE THESE RADIANS, NOT DEGREES PLS
-    //converts from rotation sof the motor to degrees of the arm
-    mLeftPivotEncoder.setPositionConversionFactor(Constants.Arm.gearReduction * 360.0);
-    mRightPivotEncoder.setPositionConversionFactor(Constants.Arm.gearReduction * 360.0);
-
-    //converts from rpm of the motor to deg/s of the arm
-    mLeftPivotEncoder.setVelocityConversionFactor(Constants.Arm.gearReduction * 360.0 / 60.0);
-    mRightPivotEncoder.setVelocityConversionFactor(Constants.Arm.gearReduction * 360.0 / 60.0);
-
-  }
 
   private void configMotors() {
     mLeftPivotMotor.restoreFactoryDefaults();
     mRightPivotMotor.restoreFactoryDefaults();
+  
+    //converts from rotations of the motor to radians of the arm
+    mLeftPivotEncoder.setPositionConversionFactor((2*Math.PI)/Constants.Arm.gearReduction);
+    mRightPivotEncoder.setPositionConversionFactor((2*Math.PI)/Constants.Arm.gearReduction);
+
+    //converts from rpm of the motor to deg/s of the arm
+    mLeftPivotEncoder.setVelocityConversionFactor((1./Constants.Arm.gearReduction) * 2*Math.PI / 60.0);
+    mRightPivotEncoder.setVelocityConversionFactor((1./Constants.Arm.gearReduction) * 2*Math.PI / 60.0);
+
+
+    mLeftPivotEncoder.setPosition(Constants.Arm.minAngleRadians);
+    mRightPivotEncoder.setPosition(Constants.Arm.minAngleRadians);
+
     mLeftPivotMotor.setSmartCurrentLimit(30);
     mRightPivotMotor.setSmartCurrentLimit(30);
     mLeftPivotMotor.setInverted(Constants.Arm.leftPivotMotorInverted);
@@ -71,7 +68,6 @@ public class ArmIOReal implements ArmIO {
     mRightPivotMotor.setIdleMode(Constants.Arm.pivotIdleMode);
     mLeftPivotMotor.burnFlash();
     mRightPivotMotor.burnFlash();
-    mRightPivotMotor.follow(mLeftPivotMotor, true);
   }
 
   @Override
@@ -87,7 +83,9 @@ public class ArmIOReal implements ArmIO {
     }
 
     inputs.armPosition = new Rotation2d(
-        Units.degreesToRadians(mLeftPivotEncoder.getPosition()));
+        mLeftPivotEncoder.getPosition());
+    inputs.leftMotorPositionRadians = mLeftPivotEncoder.getPosition();
+    inputs.rightMotorPositionRadians = mRightPivotEncoder.getPosition();
     inputs.armVelocityRadiansPerSecond = mLeftPivotEncoder.getVelocity();
     inputs.leftPivotMotorArmVolts = mLeftPivotMotor.getAppliedOutput();
     inputs.rightPivotMotorArmVolts = mRightPivotMotor.getAppliedOutput();
@@ -95,8 +93,10 @@ public class ArmIOReal implements ArmIO {
     inputs.rightPivotMotorArmCurrentAmps = mRightPivotMotor.getOutputCurrent();
     inputs.leftPivotMotorTempCelsius = mLeftPivotMotor.getMotorTemperature();
     inputs.rightPivotMotorTempCelsius = mRightPivotMotor.getMotorTemperature();
-    inputs.atFrontLimitSwitch = frontLimitSwitch.get();
-    inputs.atBackLimitSwitch = backLimitSwitch.get();
+    
+    //TODO: REPLACE THESE WHEN LIMIT SWITCHES ARE INSTALLED
+    inputs.atFrontLimitSwitch = inputs.leftMotorPositionRadians <= Constants.Arm.minAngleRadians;//frontLimitSwitch.get();
+    inputs.atBackLimitSwitch = inputs.leftMotorPositionRadians >= Constants.Arm.maxAngleRadians; //backLimitSwitch.get();
   }
 
 }

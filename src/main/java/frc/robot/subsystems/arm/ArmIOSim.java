@@ -46,7 +46,6 @@ public class ArmIOSim implements ArmIO {
     public void updateInputs(ArmIOInputs inputs) {
         armSim.update(0.02);
         inputs.armPosition = new Rotation2d(armSim.getAngleRads());
-        inputs.armPositionRadians = inputs.armPosition.getRadians();
         inputs.armVelocityRadiansPerSecond = armSim.getVelocityRadPerSec();
         inputs.leftPivotMotorArmVolts = appliedVolts;
         inputs.rightPivotMotorArmVolts = appliedVolts;

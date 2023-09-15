@@ -13,8 +13,8 @@ public class GyroIOReal implements GyroIO {
 
     private AHRS gyro;
 
-    public GyroIOReal(Port kusb) {
-        gyro = new AHRS(kusb);
+    public GyroIOReal(Port kMXP) {
+        gyro = new AHRS(kMXP);
         gyro.zeroYaw();
     }
 

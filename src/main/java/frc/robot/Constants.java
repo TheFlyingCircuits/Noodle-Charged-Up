@@ -165,7 +165,7 @@ public class Constants {
             /** CAN ID for the SPARK MAX used to control the front left steering NEO */
             public static final int steerMotorID = 2;
             /** CAN ID for the front left CANcoder */
-            public static final int steerEncoderID = 1;
+            public static final int steerEncoderID = 3;
             /** Offset from true zero for the front left swerve module in degrees */
             public static final double steerOffset = Constants.Swerve.getOffset(
                     CANCoderOffsets.one, SwerveModuleCorners.FRONT_LEFT);
@@ -177,7 +177,7 @@ public class Constants {
             /** CAN ID for the SPARK MAX used to control the front right steering NEO */
             public static final int steerMotorID = 4;
             /** CAN ID for the front right CANcoder */
-            public static final int steerEncoderID = 2;
+            public static final int steerEncoderID = 4;
             /** Offset from true zero for the front right swerve module in degrees */
             public static final double steerOffset = Constants.Swerve.getOffset(
                     CANCoderOffsets.two,
@@ -191,7 +191,7 @@ public class Constants {
             /** CAN ID for the SPARK MAX used to control the back left steering NEO */
             public static final int steerMotorID = 6;
             /** CAN ID for the back left CANcoder */
-            public static final int steerEncoderID = 3;
+            public static final int steerEncoderID = 6;
             /** Offset from true zero for the back left swerve module in degrees */
             public static final double steerOffset = Constants.Swerve.getOffset(
                     CANCoderOffsets.three,
@@ -204,7 +204,7 @@ public class Constants {
             /** CAN ID for the SPARK MAX used to control the back right steering NEO */
             public static final int steerMotorID = 8;
             /** CAN ID for the back right CANcoder */
-            public static final int steerEncoderID = 4;
+            public static final int steerEncoderID = 5;
             /** Offset from true zero for the back right swerve module in degrees */
             public static final double steerOffset = Constants.Swerve.getOffset(
                     CANCoderOffsets.four,
@@ -223,13 +223,11 @@ public class Constants {
         public static final double maxDesiredAccelerationRadiansPerSecond = 1;
         public static final double maxDesiredVelocityRadiansPerSecond = 1;
 
-        public static final int encoderID = 0;
-
         public static final double gearReduction = 105;
         // motors
-        public static final int leftPivotMotorID = 0;
-        public static final boolean leftPivotMotorInverted = true;
-        public static final int rightPivotMotorID = 0;
+        public static final int leftPivotMotorID = 13;
+        public static final boolean leftPivotMotorInverted = false;
+        public static final int rightPivotMotorID = 9;
         public static final boolean rightPivotMotorInverted = true;
         public static final double pivotMotorContinuousCurrentLimit = 20;
         public static final IdleMode pivotIdleMode = IdleMode.kBrake;
@@ -241,8 +239,8 @@ public class Constants {
         public static final double KdVoltsPerRadianPerSecondSquared = 0.00;
 
         public static final double KsVolts = 0.00;
-        public static final double KgVolts = 0.33;
-        public static final double KvVoltsPerRadianPerSecond = 1;
+        public static final double KgVolts = 0.33;//0.33 FOR SIM;
+        public static final double KvVoltsPerRadianPerSecond = 1.3;//1 FOR SIM;
         public static final double KaVoltsPerRadianPerSecondSquared = 0.0;
 
 
