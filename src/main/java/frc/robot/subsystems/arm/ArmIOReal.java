@@ -60,8 +60,8 @@ public class ArmIOReal implements ArmIO {
     mLeftPivotEncoder.setPosition(Constants.Arm.minAngleRadians);
     mRightPivotEncoder.setPosition(Constants.Arm.minAngleRadians);
 
-    mLeftPivotMotor.setSmartCurrentLimit(30);
-    mRightPivotMotor.setSmartCurrentLimit(30);
+    mLeftPivotMotor.setSmartCurrentLimit(5);
+    mRightPivotMotor.setSmartCurrentLimit(5);
     mLeftPivotMotor.setInverted(Constants.Arm.leftPivotMotorInverted);
     mRightPivotMotor.setInverted(Constants.Arm.rightPivotMotorInverted);
     mLeftPivotMotor.setIdleMode(Constants.Arm.pivotIdleMode);

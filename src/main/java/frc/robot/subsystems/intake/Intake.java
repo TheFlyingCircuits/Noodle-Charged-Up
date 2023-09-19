@@ -10,6 +10,7 @@ import com.pathplanner.lib.auto.PIDConstants;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
@@ -29,7 +30,7 @@ public class Intake extends SubsystemBase {
     frontPIDController = new PIDController(0, 0, 0);
     backPIDController = new PIDController(0, 0, 0);
 
-    feedforward = new SimpleMotorFeedforward(0.005, 0, 0); //units of VOLT per RPM
+    feedforward = new SimpleMotorFeedforward(0.001, .01, 0); //units of VOLT per RPM
   }
 
   public void setMotorRPMs(double frontRPM, double backRPM) {
@@ -50,5 +51,6 @@ public class Intake extends SubsystemBase {
     io.updateInputs(inputs);
 
     Logger.getInstance().processInputs("Intake", inputs);
+
   }
 }

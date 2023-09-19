@@ -5,6 +5,7 @@
 package frc.robot.subsystems.intake;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -13,10 +14,14 @@ public class IntakeIOReal implements IntakeIO {
 
     public CANSparkMax frontIntakeMotor;
     public CANSparkMax backIntakeMotor;
+    public RelativeEncoder frontIntakeEncoder;
+    public RelativeEncoder backIntakeEncoder;
 
     public IntakeIOReal() {
         frontIntakeMotor = new CANSparkMax(15, MotorType.kBrushless);
         backIntakeMotor = new CANSparkMax(21, MotorType.kBrushless);
+        frontIntakeEncoder = frontIntakeMotor.getEncoder();
+        backIntakeEncoder = frontIntakeMotor.getEncoder();
         configureMotors();
     }
     
@@ -33,8 +38,8 @@ public class IntakeIOReal implements IntakeIO {
 
     @Override
     public void updateInputs(IntakeIOInputs inputs) {
-        inputs.frontVelocityRPM = 0.0;
-        inputs.backVelocityRPM = 0.0;
+        inputs.frontVelocityRPM = frontIntakeEncoder.getVelocity();
+        inputs.backVelocityRPM = backIntakeEncoder.getVelocity();
         inputs.frontAppliedVoltage = frontIntakeMotor.getAppliedOutput();
         inputs.backAppliedVoltage = backIntakeMotor.getAppliedOutput();
     }
