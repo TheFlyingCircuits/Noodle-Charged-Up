@@ -10,6 +10,9 @@ import com.pathplanner.lib.auto.PIDConstants;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -23,14 +26,26 @@ public class Intake extends SubsystemBase {
 
   private SimpleMotorFeedforward feedforward;
 
+  ShuffleboardTab tab;
+  GenericEntry topVolts;
+  GenericEntry bottomVolts;
   public Intake(IntakeIO io) {
     this.io=io;
     this.inputs = new IntakeIOInputsAutoLogged();
 
+    tab = Shuffleboard.getTab("rpmvolts");
+    topVolts = Shuffleboard.getTab("rpmvolts")
+      .add("top volts", 0)
+      .getEntry();
+
+    bottomVolts = Shuffleboard.getTab("rpmvolts")
+      .add("bottom volts", 0)
+      .getEntry();
+
     frontPIDController = new PIDController(0, 0, 0);
     backPIDController = new PIDController(0, 0, 0);
 
-    feedforward = new SimpleMotorFeedforward(0.001, .01, 0); //units of VOLT per RPM
+    feedforward = new SimpleMotorFeedforward(0.001, .003, 0.5); //units of VOLT per RPM
   }
 
   public void setMotorRPMs(double frontRPM, double backRPM) {
@@ -44,6 +59,14 @@ public class Intake extends SubsystemBase {
 
   public void setMotor100RPM() {
     setMotorRPMs(100, 100);
+  }
+
+
+  public double getTopVolts() {
+    return topVolts.getDouble(0);
+  }
+  public double getBottomVolts() {
+    return bottomVolts.getDouble(0);
   }
 
   @Override
