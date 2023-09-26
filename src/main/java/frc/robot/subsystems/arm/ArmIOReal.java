@@ -57,15 +57,16 @@ public class ArmIOReal implements ArmIO {
     mRightPivotEncoder.setVelocityConversionFactor((1./Constants.Arm.gearReduction) * 2*Math.PI / 60.0);
 
 
-    mLeftPivotEncoder.setPosition(Constants.Arm.minAngleRadians);
-    mRightPivotEncoder.setPosition(Constants.Arm.minAngleRadians);
-
     mLeftPivotMotor.setSmartCurrentLimit(20);
     mRightPivotMotor.setSmartCurrentLimit(20);
     mLeftPivotMotor.setInverted(Constants.Arm.leftPivotMotorInverted);
     mRightPivotMotor.setInverted(Constants.Arm.rightPivotMotorInverted);
     mLeftPivotMotor.setIdleMode(Constants.Arm.pivotIdleMode);
     mRightPivotMotor.setIdleMode(Constants.Arm.pivotIdleMode);
+
+    mLeftPivotEncoder.setPosition(Constants.Arm.minAngleRadians);
+    mRightPivotEncoder.setPosition(Constants.Arm.minAngleRadians);
+
     mLeftPivotMotor.burnFlash();
     mRightPivotMotor.burnFlash();
   }

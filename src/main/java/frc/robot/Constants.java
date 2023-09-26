@@ -213,7 +213,6 @@ public class Constants {
     }
 
     public final static class Arm {
-        public static final double encoderOffsetRadians = 0.0;
         public static final double minAngleRadians = Units.degreesToRadians(-20);
         public static final double maxAngleRadians = Units.degreesToRadians(90);
 
@@ -234,14 +233,14 @@ public class Constants {
 
         //PID
 
-        public static final double KpVoltsPerRadianPerSecond = 0.00;
+        public static final double KpVoltsPerRadianPerSecond = 0.510;
         public static final double KiVoltsPerRadian = 0.00;
         public static final double KdVoltsPerRadianPerSecondSquared = 0.00;
 
-        public static final double KsVolts = 0.00;
-        public static final double KgVolts = 0.33;//0.33 FOR SIM;
-        public static final double KvVoltsPerRadianPerSecond = 1.3;//1 FOR SIM;
-        public static final double KaVoltsPerRadianPerSecondSquared = 0.0;
+        public static final double KsVolts = 0.062;
+        public static final double KgVolts = 0.455;//0.33 FOR SIM;
+        public static final double KvVoltsPerRadianPerSecond = 1.073;//1 FOR SIM;
+        public static final double KaVoltsPerRadianPerSecondSquared = 0.024;
 
 
         public static final double intakePositionRadians = Units.degreesToRadians(0.00);

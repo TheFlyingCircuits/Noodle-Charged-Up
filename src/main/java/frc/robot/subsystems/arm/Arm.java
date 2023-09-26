@@ -181,7 +181,7 @@ public class Arm extends SubsystemBase {
     public void periodic() {
 
         io.updateInputs(inputs);
-        //followTrapezoidProfile();
+        followTrapezoidProfile();
 
         mechArm.setAngle(inputs.armPosition.getDegrees());
 
