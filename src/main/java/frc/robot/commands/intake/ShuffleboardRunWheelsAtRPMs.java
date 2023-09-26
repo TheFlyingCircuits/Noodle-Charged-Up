@@ -18,7 +18,10 @@ public class ShuffleboardRunWheelsAtRPMs extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.setMotorRPMs(intake.getTopVolts(), intake.getBottomVolts());
+
+    if (intake.getTopVolts() > 0) intake.setMotorAmpLimits(15, 15);
+    else intake.setMotorAmpLimits(40, 40);
+    intake.setMotorVolts(intake.getTopVolts(), intake.getBottomVolts());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -28,7 +31,7 @@ public class ShuffleboardRunWheelsAtRPMs extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.setMotorRPMs(0, 0);
+    intake.setMotorVolts(0, 0);
   }
 
   // Returns true when the command should end.

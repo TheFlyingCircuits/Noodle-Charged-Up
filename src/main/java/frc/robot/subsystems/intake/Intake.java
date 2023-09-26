@@ -61,6 +61,10 @@ public class Intake extends SubsystemBase {
     setMotorRPMs(100, 100);
   }
 
+  public void setMotorVolts(double frontVolts, double backVolts) {
+    io.setIntakeWheelVoltages(frontVolts, backVolts);
+  }
+
 
   public double getTopVolts() {
     return topVolts.getDouble(0);
@@ -69,11 +73,15 @@ public class Intake extends SubsystemBase {
     return bottomVolts.getDouble(0);
   }
 
+  public void setMotorAmpLimits(int frontAmpLimit, int backAmpLimit) {
+    io.setIntakeWheelAmpLimits(frontAmpLimit, backAmpLimit);
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
 
     Logger.getInstance().processInputs("Intake", inputs);
-
+    SmartDashboard.putNumber("front wheel rpm", inputs.frontVelocityRPM);
   }
 }

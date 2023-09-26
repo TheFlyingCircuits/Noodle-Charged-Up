@@ -133,8 +133,8 @@ public class RobotContainer {
 
   private void configureBindings() {
     controller.y().onTrue(new InstantCommand(drivetrain::zeroYaw));
-    controller.button(1).onTrue(new InstantCommand(arm::setArmPosition45Degrees));
-    controller.button(2).onTrue(new InstantCommand(arm::setArmPosition0Degrees));
+    // controller.button(1).onTrue(new InstantCommand(arm::setArmPosition45Degrees));
+    // controller.button(2).onTrue(new InstantCommand(arm::setArmPosition0Degrees));
     controller.rightTrigger().whileTrue(new SetIntakeWheelSpeeds(intake, 100, 100)).onFalse(new SetIntakeWheelSpeeds(intake, 0, 0));
     controller.leftTrigger().whileTrue(new SetIntakeWheelSpeeds(intake, -100, -100)).onFalse(new SetIntakeWheelSpeeds(intake, 0, 0));
     controller.a().whileTrue(new ShuffleboardRunWheelsAtRPMs(intake));

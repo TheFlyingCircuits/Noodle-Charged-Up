@@ -23,4 +23,6 @@ public interface IntakeIO {
      * @param backVolts - The voltage to feed to the back motor. This will be POSITIVE to intake a cube, and negative to shoot a cube. 
      */
     public default void setIntakeWheelVoltages(double frontVolts, double backVolts) {}
+
+    public default void setIntakeWheelAmpLimits(int frontAmpLimit, int backAmpLimit) {};
 }

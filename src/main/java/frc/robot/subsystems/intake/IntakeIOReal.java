@@ -32,8 +32,16 @@ public class IntakeIOReal implements IntakeIO {
         backIntakeMotor.setInverted(true);
         frontIntakeMotor.setIdleMode(IdleMode.kBrake);
         backIntakeMotor.setIdleMode(IdleMode.kBrake);
+        frontIntakeMotor.setOpenLoopRampRate(0.01);
+        backIntakeMotor.setOpenLoopRampRate(0.01);
         frontIntakeMotor.burnFlash();
         backIntakeMotor.burnFlash();
+    }
+
+    @Override
+    public void setIntakeWheelAmpLimits(int frontAmpLimit, int backAmpLimit) {
+        frontIntakeMotor.setSmartCurrentLimit(frontAmpLimit);
+        backIntakeMotor.setSmartCurrentLimit(backAmpLimit);
     }
 
     @Override
