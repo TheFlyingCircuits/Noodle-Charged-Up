@@ -7,10 +7,10 @@ package frc.robot.commands.intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.intake.Intake;
 
-public class ShuffleboardRunWheelsAtRPMs extends CommandBase {
+public class ShuffleboardRunWheelsAtVolt extends CommandBase {
   /** Creates a new ShuffleboardRunWheelsAtVolt. */
   private Intake intake;
-  public ShuffleboardRunWheelsAtRPMs(Intake intake) {
+  public ShuffleboardRunWheelsAtVolt(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
   }

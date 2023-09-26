@@ -15,9 +15,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.arm.ShuffleboardSetArmToPosition;
 import frc.robot.commands.drivetrain.JoystickDrive;
 import frc.robot.commands.intake.SetIntakeWheelSpeeds;
-import frc.robot.commands.intake.ShuffleboardRunWheelsAtRPMs;
+import frc.robot.commands.intake.ShuffleboardRunWheelsAtVolt;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmIO;
 import frc.robot.subsystems.arm.ArmIOReal;
@@ -137,7 +138,8 @@ public class RobotContainer {
     // controller.button(2).onTrue(new InstantCommand(arm::setArmPosition0Degrees));
     controller.rightTrigger().whileTrue(new SetIntakeWheelSpeeds(intake, 100, 100)).onFalse(new SetIntakeWheelSpeeds(intake, 0, 0));
     controller.leftTrigger().whileTrue(new SetIntakeWheelSpeeds(intake, -100, -100)).onFalse(new SetIntakeWheelSpeeds(intake, 0, 0));
-    controller.a().whileTrue(new ShuffleboardRunWheelsAtRPMs(intake));
+    controller.povUp().whileTrue(new ShuffleboardRunWheelsAtVolt(intake));
+    controller.povDown().whileTrue(new ShuffleboardSetArmToPosition(arm));
   }
 
   public Command getAutonomousCommand() {

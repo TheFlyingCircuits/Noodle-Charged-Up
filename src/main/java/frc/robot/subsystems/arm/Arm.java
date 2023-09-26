@@ -7,7 +7,10 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
@@ -42,10 +45,19 @@ public class Arm extends SubsystemBase {
     private MechanismRoot2d mechRoot;
     private MechanismLigament2d mechArm;
 
+    ShuffleboardTab tab;
+    GenericEntry desiredSetpoint;
+
     public Arm(ArmIO io) {
         this.io = io;
         this.inputs = new ArmIOInputsAutoLogged();
 
+        tab = Shuffleboard.getTab("armPos");
+        desiredSetpoint = Shuffleboard.getTab("armPos")
+        .add("arm position", 0)
+        .getEntry();
+        
+        
         this.velocityController = new PIDController(
                 Constants.Arm.KpVoltsPerRadianPerSecond,
                 Constants.Arm.KiVoltsPerRadian,
@@ -161,8 +173,13 @@ public class Arm extends SubsystemBase {
         setArmRadiansPerSecond(desiredRadiansPerSecond);
     }
 
+    public double getArmPosition() {
+        return desiredSetpoint.getDouble(0);
+    }
+
     @Override
     public void periodic() {
+
         io.updateInputs(inputs);
         //followTrapezoidProfile();
 

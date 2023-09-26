@@ -117,11 +117,11 @@ public class Constants {
          * All values are relative to the front left corner configuration.
          */
         public static final class CANCoderOffsets {
-            public static final double one = -61.1719;
+            public static final double one = 210.43;//0;//85.693;
             public static final double two = 108.896;
             public static final double three = 17.23 - 90;
-            public static final double four = 117.33 - 180;
-            public static final double five = 105.08;
+            public static final double four = 0;
+            public static final double five = 105.82;
             public static final double six = 85.43;
             public static final double seven = 99.492;
             public static final double eight = 0;
@@ -180,7 +180,7 @@ public class Constants {
             public static final int steerEncoderID = 4;
             /** Offset from true zero for the front right swerve module in degrees */
             public static final double steerOffset = Constants.Swerve.getOffset(
-                    CANCoderOffsets.two,
+                    CANCoderOffsets.four,
                     SwerveModuleCorners.FRONT_RIGHT);
 
         }
@@ -194,7 +194,7 @@ public class Constants {
             public static final int steerEncoderID = 6;
             /** Offset from true zero for the back left swerve module in degrees */
             public static final double steerOffset = Constants.Swerve.getOffset(
-                    CANCoderOffsets.five,
+                    CANCoderOffsets.six,
                     SwerveModuleCorners.BACK_LEFT);
         }
 
@@ -225,9 +225,9 @@ public class Constants {
 
         public static final double gearReduction = 105;
         // motors
-        public static final int leftPivotMotorID = 13;
+        public static final int leftPivotMotorID = 9;
         public static final boolean leftPivotMotorInverted = false;
-        public static final int rightPivotMotorID = 9;
+        public static final int rightPivotMotorID = 15;
         public static final boolean rightPivotMotorInverted = true;
         public static final double pivotMotorContinuousCurrentLimit = 20;
         public static final IdleMode pivotIdleMode = IdleMode.kBrake;

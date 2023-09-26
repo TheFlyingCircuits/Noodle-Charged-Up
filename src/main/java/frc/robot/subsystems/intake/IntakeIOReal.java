@@ -18,16 +18,16 @@ public class IntakeIOReal implements IntakeIO {
     public RelativeEncoder backIntakeEncoder;
 
     public IntakeIOReal() {
-        frontIntakeMotor = new CANSparkMax(15, MotorType.kBrushless);
-        backIntakeMotor = new CANSparkMax(21, MotorType.kBrushless);
+        frontIntakeMotor = new CANSparkMax(21, MotorType.kBrushless);
+        backIntakeMotor = new CANSparkMax(13, MotorType.kBrushless);
         frontIntakeEncoder = frontIntakeMotor.getEncoder();
         backIntakeEncoder = frontIntakeMotor.getEncoder();
         configureMotors();
     }
     
     private void configureMotors() {
-        frontIntakeMotor.setSmartCurrentLimit(15);
-        backIntakeMotor.setSmartCurrentLimit(15);
+        frontIntakeMotor.setSmartCurrentLimit(50);
+        backIntakeMotor.setSmartCurrentLimit(50);
         frontIntakeMotor.setInverted(true);
         backIntakeMotor.setInverted(true);
         frontIntakeMotor.setIdleMode(IdleMode.kBrake);
