@@ -4,28 +4,34 @@
 
 package frc.robot.commands.intake;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.intake.Intake;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SetIntakeWheelSpeeds extends InstantCommand {
+public class SetIntakeWheelVoltages extends CommandBase {
 
   private Intake intake;
-  double frontRPM;
-  double backRPM;
+  double frontVolts;
+  double backVolts;
 
-  public SetIntakeWheelSpeeds(Intake intake, double frontRPM, double backRPM) {
+  public SetIntakeWheelVoltages(Intake intake, double frontVolts, double backVolts) {
     addRequirements(intake);
     this.intake = intake;
-    this.frontRPM=frontRPM;
-    this.backRPM=backRPM;
+    this.frontVolts=frontVolts;
+    this.backVolts=backVolts;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.setMotorRPMs(frontRPM, backRPM);
+    intake.setMotorVolts(frontVolts, backVolts);
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    intake.setMotorVolts(0, 0);
   }
 }

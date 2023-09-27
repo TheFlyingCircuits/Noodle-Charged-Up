@@ -18,13 +18,6 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import frc.robot.Constants;
 
 public class Arm extends SubsystemBase {
-    public enum ArmPosition {
-        Intake,
-        Low,
-        Mid,
-        High,
-        Default
-    }
 
     private final ArmIO io;
     private final ArmIOInputsAutoLogged inputs;
@@ -113,28 +106,6 @@ public class Arm extends SubsystemBase {
         setArmPositionRadians(0);
     }
 
-    public void setArmPosition(ArmPosition position) {
-        switch (position) {
-            case Intake:
-                setpointRadians = Constants.Arm.intakePositionRadians;
-                break;
-            case Low:
-                setpointRadians = Constants.Arm.lowPositionRadians;
-                break;
-            case Mid:
-                setpointRadians = Constants.Arm.midPositionRadians;
-                break;
-            case High:
-                setpointRadians = Constants.Arm.highPositionRadians;
-                break;
-            case Default:
-            default:
-                setpointRadians = Constants.Arm.defaultPositionRadians;
-                break;
-        }
-        setArmPositionRadians(setpointRadians);
-    }
-
     private void setArmRadiansPerSecond(double targetRadiansPerSecond) {
 
         //TODO: INCORPORATE CUSTOM POSITION FEEDBACK RATHER THAN USING PIDCONTROLLER INTEGRAL IN ORDER TO AVOID INTEGRAL WINDUP
@@ -163,7 +134,7 @@ public class Arm extends SubsystemBase {
         }
 
         //ends trapezoidal profile if reached desired position
-        if (trapezoidProfile.isFinished(timer.get()) && (Math.abs(inputs.armPosition.getRadians() - setpointRadians) <= 0.005)) {
+        if (trapezoidProfile.isFinished(timer.get()) && (Math.abs(inputs.armPosition.getRadians() - setpointRadians) <= 0.1)) {
             isMovingToTarget = false;
             return;
         }
@@ -178,8 +149,16 @@ public class Arm extends SubsystemBase {
         return desiredSetpoint.getDouble(0);
     }
 
+    public boolean atSetpoint() {
+        return !isMovingToTarget;
+    }
+
     @Override
     public void periodic() {
+
+        if (inputs.atBackLimitSwitch) {
+            io.setArmPosition(Constants.Arm.maxAngleRadians);
+        }
 
         io.updateInputs(inputs);
         followTrapezoidProfile();

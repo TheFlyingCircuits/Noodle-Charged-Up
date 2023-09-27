@@ -33,5 +33,7 @@ public interface ArmIO {
      */
     public default void setArmVoltage(double volts) {}
 
+    public default void setArmPosition(double positionRadians) {}
+
 
 }

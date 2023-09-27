@@ -220,8 +220,8 @@ public class Constants {
         public static final double armWidthMeters = Units.inchesToMeters(50);
         public static final double armLengthMeters = Units.inchesToMeters(50);
         
-        public static final double maxDesiredAccelerationRadiansPerSecond = 1;//1;//3;
-        public static final double maxDesiredVelocityRadiansPerSecond = 1;//1;//7;
+        public static final double maxDesiredAccelerationRadiansPerSecond = 5.0;//1;//3;
+        public static final double maxDesiredVelocityRadiansPerSecond = 4.0;//1;//7;
 
         public static final double gearReduction = 105;
         // motors
@@ -235,7 +235,7 @@ public class Constants {
         //PID
 
         public static final double KpVoltsPerRadianPerSecond = 0.510;
-        public static final double KiVoltsPerRadian = 0.00;
+        public static final double KiVoltsPerRadian = 0.5; //TODO: INCREASE THIS?
         public static final double KdVoltsPerRadianPerSecondSquared = 0.00;
 
         public static final double KsVolts = 0.062;

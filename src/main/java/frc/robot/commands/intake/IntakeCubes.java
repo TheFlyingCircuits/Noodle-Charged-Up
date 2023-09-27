@@ -26,7 +26,7 @@ public class IntakeCubes extends CommandBase {
   @Override
   public void initialize() {
     intake.setMotorVolts(4, 4);
-    arm.setArmPositionRadians(Constants.Arm.minAngleRadians);
+    arm.setArmPositionRadians(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

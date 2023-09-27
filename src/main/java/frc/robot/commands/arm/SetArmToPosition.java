@@ -10,9 +10,9 @@ import frc.robot.subsystems.arm.Arm;
 public class SetArmToPosition extends CommandBase {
   private Arm arm;
   private double setpoint;
-  public SetArmToPosition(Arm arm, double setpointDegrees) {
+  public SetArmToPosition(Arm arm, double setpointRadians) {
     this.arm = arm;
-    this.setpoint = setpointDegrees;
+    this.setpoint = setpointRadians;
   }
 
   // Called when the command is initially scheduled.
@@ -32,6 +32,6 @@ public class SetArmToPosition extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return arm.atSetpoint();
   }
 }

@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.arm.ShuffleboardSetArmToPosition;
 import frc.robot.commands.drivetrain.JoystickDrive;
 import frc.robot.commands.intake.IntakeCubes;
-import frc.robot.commands.intake.SetIntakeWheelSpeeds;
+import frc.robot.commands.intake.ShootCube;
 import frc.robot.commands.intake.ShuffleboardRunWheelsAtVolt;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmIO;
@@ -139,8 +139,15 @@ public class RobotContainer {
     controller.y().onTrue(new InstantCommand(drivetrain::zeroYaw));
     // controller.button(1).onTrue(new InstantCommand(arm::setArmPosition45Degrees));
     // controller.button(2).onTrue(new InstantCommand(arm::setArmPosition0Degrees));
+
+    //intake
     controller.rightTrigger().whileTrue(new IntakeCubes(intake, arm));
-    controller.leftTrigger().whileTrue(new SetIntakeWheelSpeeds(intake, -100, -100)).onFalse(new SetIntakeWheelSpeeds(intake, 0, 0));
+
+    //HIGH SHOT
+    controller.leftBumper().whileTrue(new ShootCube(arm, intake, -6, -12));
+
+
+    
     controller.povUp().whileTrue(new ShuffleboardRunWheelsAtVolt(intake));
     controller.povDown().whileTrue(new ShuffleboardSetArmToPosition(arm));
   }
