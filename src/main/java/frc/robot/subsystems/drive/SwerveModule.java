@@ -30,6 +30,7 @@ public class SwerveModule {
       Constants.Swerve.drivekAVoltsSecondsSquaredPerMeter);
 
   public SwerveModule(SwerveModuleIO io, int moduleNumber) {
+    System.out.println("[Init] Creating " + this.getClass().getName());
 
     this.io = io;
     this.moduleNumber = moduleNumber;

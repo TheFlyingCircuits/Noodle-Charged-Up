@@ -26,6 +26,7 @@ public class Vision extends SubsystemBase {
   private int iteration = 1;
 
   public Vision(VisionIO io) {
+    System.out.println("[Init] Creating " + this.getClass().getName());
 
     this.io = io;
     inputs = new VisionIOInputsAutoLogged();

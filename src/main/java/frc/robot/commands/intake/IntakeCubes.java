@@ -5,23 +5,28 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.intake.Intake;
 
-public class ShuffleboardRunWheelsAtVolt extends CommandBase {
-  /** Creates a new ShuffleboardRunWheelsAtVolt. */
+public class IntakeCubes extends CommandBase {
+  /** Creates a new IntakeCubes. */
   private Intake intake;
-  public ShuffleboardRunWheelsAtVolt(Intake intake) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  private Arm arm;
+  public IntakeCubes(Intake intake, Arm arm) {
+    addRequirements(intake);
+    addRequirements(arm);
     this.intake = intake;
+    this.arm = arm;
+    
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    if (intake.getTopVolts() > 0) intake.setMotorAmpLimits(50, 50);
-    else intake.setMotorAmpLimits(50, 50);
-    intake.setMotorVolts(intake.getTopVolts(), intake.getBottomVolts());
+    intake.setMotorVolts(4, 4);
+    arm.setArmPositionRadians(Constants.Arm.minAngleRadians);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,6 +37,7 @@ public class ShuffleboardRunWheelsAtVolt extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     intake.setMotorVolts(0, 0);
+    arm.setArmPositionRadians(Constants.Arm.maxAngleRadians);
   }
 
   // Returns true when the command should end.

@@ -4,10 +4,7 @@
 
 package frc.robot.subsystems.arm;
 
-import com.revrobotics.REVPhysicsSim;
-
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
@@ -17,7 +14,6 @@ import frc.robot.Constants;
 /** Add your docs here. */
 public class ArmIOSim implements ArmIO {
 
-    private REVPhysicsSim revPhysicsSim;
     private double appliedVolts = 0;
     private SingleJointedArmSim armSim = new SingleJointedArmSim(
         DCMotor.getNeo550(2),

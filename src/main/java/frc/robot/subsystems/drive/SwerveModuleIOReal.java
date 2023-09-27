@@ -24,6 +24,7 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
     private RelativeEncoder mAngleEncoder;
 
     public SwerveModuleIOReal(int driveMotorID, int angleMotorID, int cancoderID, double angleOffset) {
+        System.out.println("[Init] Creating " + this.getClass().getName());
         this.angleOffset=angleOffset;
         
         /* Angle Encoder Config */

@@ -42,6 +42,8 @@ public class Drivetrain extends SubsystemBase {
   private SlewRateLimiter chassisSpeedsYSlewLimiter;
 
   public Drivetrain(GyroIO gyroIO, SwerveModuleIO flIO, SwerveModuleIO frIO, SwerveModuleIO blIO, SwerveModuleIO brIO) {
+    System.out.println("[Init] Creating " + this.getClass().getName());
+
 
     this.gyroIO = gyroIO;
     gyroInputs = new GyroIOInputsAutoLogged();

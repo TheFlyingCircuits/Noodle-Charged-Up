@@ -6,8 +6,6 @@ package frc.robot.subsystems.intake;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.pathplanner.lib.auto.PIDConstants;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.networktables.GenericEntry;
@@ -30,6 +28,7 @@ public class Intake extends SubsystemBase {
   GenericEntry topVolts;
   GenericEntry bottomVolts;
   public Intake(IntakeIO io) {
+    System.out.println("[Init] Creating " + this.getClass().getName());
     this.io=io;
     this.inputs = new IntakeIOInputsAutoLogged();
 

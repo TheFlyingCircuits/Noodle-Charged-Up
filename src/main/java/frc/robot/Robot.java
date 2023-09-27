@@ -31,9 +31,11 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotInit() {
+    System.out.println("[Init] Creating " + this.getClass().getName());
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
 
+    System.out.println("Ghost Buster 10 second wait started!");
     if (isReal()) Timer.delay(10); // Ghost Busters! Make sure everything has time to power up before initializing
 
     Logger.getInstance().recordMetadata("projectName", "Noodle-Charged-Up");

@@ -14,6 +14,7 @@ public class GyroIOReal implements GyroIO {
     private AHRS gyro;
 
     public GyroIOReal(Port kMXP) {
+        System.out.println("[Init] Creating " + this.getClass().getName());
         gyro = new AHRS(kMXP);
         gyro.zeroYaw();
     }

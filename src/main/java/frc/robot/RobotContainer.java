@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.arm.ShuffleboardSetArmToPosition;
 import frc.robot.commands.drivetrain.JoystickDrive;
+import frc.robot.commands.intake.IntakeCubes;
 import frc.robot.commands.intake.SetIntakeWheelSpeeds;
 import frc.robot.commands.intake.ShuffleboardRunWheelsAtVolt;
 import frc.robot.subsystems.arm.Arm;
@@ -54,6 +55,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     if (RobotBase.isReal()) {
+      System.out.println("[Init] Creating Real Robot");
       drivetrain = new Drivetrain(
           new GyroIOReal(Port.kMXP),
           new SwerveModuleIOReal(
@@ -84,6 +86,7 @@ public class RobotContainer {
       intake = new Intake(new IntakeIOReal());
 
     } else if (RobotBase.isSimulation()) {
+      System.out.println("[Init] Creating Sim Robot");
       drivetrain = new Drivetrain(
           new GyroIOSim(),
           new SwerveModuleIOSim(),
@@ -136,7 +139,7 @@ public class RobotContainer {
     controller.y().onTrue(new InstantCommand(drivetrain::zeroYaw));
     // controller.button(1).onTrue(new InstantCommand(arm::setArmPosition45Degrees));
     // controller.button(2).onTrue(new InstantCommand(arm::setArmPosition0Degrees));
-    controller.rightTrigger().whileTrue(new SetIntakeWheelSpeeds(intake, 100, 100)).onFalse(new SetIntakeWheelSpeeds(intake, 0, 0));
+    controller.rightTrigger().whileTrue(new IntakeCubes(intake, arm));
     controller.leftTrigger().whileTrue(new SetIntakeWheelSpeeds(intake, -100, -100)).onFalse(new SetIntakeWheelSpeeds(intake, 0, 0));
     controller.povUp().whileTrue(new ShuffleboardRunWheelsAtVolt(intake));
     controller.povDown().whileTrue(new ShuffleboardSetArmToPosition(arm));

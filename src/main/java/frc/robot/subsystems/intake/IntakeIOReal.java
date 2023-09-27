@@ -18,6 +18,7 @@ public class IntakeIOReal implements IntakeIO {
     public RelativeEncoder backIntakeEncoder;
 
     public IntakeIOReal() {
+        System.out.println("[Init] Creating " + this.getClass().getName());
         frontIntakeMotor = new CANSparkMax(21, MotorType.kBrushless);
         backIntakeMotor = new CANSparkMax(13, MotorType.kBrushless);
         frontIntakeEncoder = frontIntakeMotor.getEncoder();

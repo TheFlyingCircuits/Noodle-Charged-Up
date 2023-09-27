@@ -22,6 +22,7 @@ public class GyroIOSim implements GyroIO {
      * Using odometry, the yaw can be calculated. In order to do this, call {@code calculateYawFromOdometry()} periodically.
      */
     public GyroIOSim(SwerveModulePosition[] modulePosition) {
+        System.out.println("[Init] Creating " + this.getClass().getName());
         prevModulePositions = modulePosition;
     };
 

@@ -49,6 +49,7 @@ public class Arm extends SubsystemBase {
     GenericEntry desiredSetpoint;
 
     public Arm(ArmIO io) {
+        System.out.println("[Init] Creating " + this.getClass().getName());
         this.io = io;
         this.inputs = new ArmIOInputsAutoLogged();
 

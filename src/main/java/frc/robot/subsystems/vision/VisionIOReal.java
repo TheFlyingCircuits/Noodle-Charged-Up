@@ -14,7 +14,7 @@ public class VisionIOReal implements VisionIO {
   private static NetworkTable limelight;
 
   public VisionIOReal() {
-
+    System.out.println("[Init] Creating " + this.getClass().getName());
     limelight = NetworkTableInstance.getDefault().getTable("limelight");
   }
 

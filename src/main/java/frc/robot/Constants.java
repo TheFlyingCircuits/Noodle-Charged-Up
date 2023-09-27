@@ -213,14 +213,15 @@ public class Constants {
     }
 
     public final static class Arm {
-        public static final double minAngleRadians = Units.degreesToRadians(-20);
-        public static final double maxAngleRadians = Units.degreesToRadians(90);
+        public static final double minAngleRadians = Units.degreesToRadians(-7);
+        public static final double startingAngleRadians = Units.degreesToRadians(153);
+        public static final double maxAngleRadians = Units.degreesToRadians(153);
 
         public static final double armWidthMeters = Units.inchesToMeters(50);
         public static final double armLengthMeters = Units.inchesToMeters(50);
         
-        public static final double maxDesiredAccelerationRadiansPerSecond = 1;
-        public static final double maxDesiredVelocityRadiansPerSecond = 1;
+        public static final double maxDesiredAccelerationRadiansPerSecond = 1;//1;//3;
+        public static final double maxDesiredVelocityRadiansPerSecond = 1;//1;//7;
 
         public static final double gearReduction = 105;
         // motors
