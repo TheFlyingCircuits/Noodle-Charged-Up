@@ -24,8 +24,8 @@ public class ReverseIntake extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    arm.setArmPositionRadians(Constants.Arm.reverseIntakeAngleRadians);
-    intake.setMotorVolts(-2, -2);
+    // arm.setArmPositionRadians(Constants.Arm.reverseIntakeAngleRadians);
+    intake.setMotorVolts(-1.5, -1.5);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,7 +36,7 @@ public class ReverseIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     intake.setMotorVolts(0, 0);
-    arm.setArmPositionRadians(Constants.Arm.maxAngleRadians);
+    // arm.setArmPositionRadians(Constants.Arm.maxAngleRadians);
   }
 
   // Returns true when the command should end.

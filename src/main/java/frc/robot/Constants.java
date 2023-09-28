@@ -213,9 +213,9 @@ public class Constants {
     }
 
     public final static class Arm {
-        public static final double minAngleRadians = Units.degreesToRadians(-7);
-        public static final double startingAngleRadians = Units.degreesToRadians(153);
-        public static final double maxAngleRadians = Units.degreesToRadians(153);
+        public static final double minAngleRadians = Units.degreesToRadians(-5);
+        public static final double startingAngleRadians = Units.degreesToRadians(150);
+        public static final double maxAngleRadians = Units.degreesToRadians(150);
         public static final double reverseIntakeAngleRadians = Units.degreesToRadians(75);
 
         public static final double armWidthMeters = Units.inchesToMeters(50);

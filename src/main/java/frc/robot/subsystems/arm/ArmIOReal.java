@@ -61,8 +61,8 @@ public class ArmIOReal implements ArmIO {
 
 
 
-    mLeftPivotMotor.setSmartCurrentLimit(40);
-    mRightPivotMotor.setSmartCurrentLimit(40);
+    mLeftPivotMotor.setSmartCurrentLimit(20);
+    mRightPivotMotor.setSmartCurrentLimit(20);
 
     mLeftPivotMotor.setIdleMode(Constants.Arm.pivotIdleMode);
     mRightPivotMotor.setIdleMode(Constants.Arm.pivotIdleMode);

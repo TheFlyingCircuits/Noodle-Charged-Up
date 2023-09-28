@@ -123,7 +123,7 @@ public class RobotContainer {
     configureBindings();
 
     drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, true));
-    arm.setDefaultCommand(new ArmIdle(arm));
+    // arm.setDefaultCommand(new ArmIdle(arm));
   }
 
   private void configureBindings() {
