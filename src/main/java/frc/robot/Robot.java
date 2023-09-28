@@ -73,7 +73,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void disabledPeriodic() {
-    String path = m_robotContainer.autoChooser.getSelected();
+    String path = "noodle path";
     if (previousPath.equals(path)) return;
 
     m_robotContainer.pathGroup = PathPlanner.loadPathGroup(

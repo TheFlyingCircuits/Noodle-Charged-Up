@@ -10,16 +10,15 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.SerialPort.Port;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.arm.ShuffleboardSetArmToPosition;
+import frc.robot.commands.arm.ArmIdle;
+import frc.robot.commands.autonomous.AutoRoutine;
 import frc.robot.commands.drivetrain.JoystickDrive;
 import frc.robot.commands.intake.IntakeCubes;
+import frc.robot.commands.intake.ReverseIntake;
 import frc.robot.commands.intake.ShootCube;
-import frc.robot.commands.intake.ShuffleboardRunWheelsAtVolt;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmIO;
 import frc.robot.subsystems.arm.ArmIOReal;
@@ -50,7 +49,6 @@ public class RobotContainer {
   public final Vision vision;
   public final Arm arm;
   public final Intake intake;
-  public final SendableChooser<String> autoChooser = new SendableChooser<>();
 
   public RobotContainer() {
 
@@ -124,15 +122,8 @@ public class RobotContainer {
 
     configureBindings();
 
-
-
-    autoChooser.setDefaultOption("1 cone + balance wire guard", "1 cone + balance wire guard");
-
-
-
     drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, true));
-
-    SmartDashboard.putData(autoChooser);
+    arm.setDefaultCommand(new ArmIdle(arm));
   }
 
   private void configureBindings() {
@@ -142,18 +133,23 @@ public class RobotContainer {
 
     //intake
     controller.rightTrigger().whileTrue(new IntakeCubes(intake, arm));
+    controller.leftTrigger().whileTrue(new ReverseIntake(arm, intake));
+
+    //MID SHOT
+    //TODO: test these voltages
+    controller.rightBumper().whileTrue(new ShootCube(arm, intake, -4, -6));
 
     //HIGH SHOT
     controller.leftBumper().whileTrue(new ShootCube(arm, intake, -6, -12));
 
-
+    // controller.povDown()
     
-    controller.povUp().whileTrue(new ShuffleboardRunWheelsAtVolt(intake));
-    controller.povDown().whileTrue(new ShuffleboardSetArmToPosition(arm));
+    // controller.povUp().whileTrue(new ShuffleboardRunWheelsAtVolt(intake));
+    // controller.povDown().whileTrue(new ShuffleboardSetArmToPosition(arm));
   }
 
   public Command getAutonomousCommand() {
-    return new InstantCommand(drivetrain::setPose2D180);//.andThen(
-        // new AutoRoutine(pathGroup, drivetrain, vision));
+    return new InstantCommand(drivetrain::setPose2D180).andThen(
+        new AutoRoutine(pathGroup, drivetrain, arm, intake, vision));
   }
 }

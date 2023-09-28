@@ -99,13 +99,6 @@ public class Arm extends SubsystemBase {
         isMovingToTarget = true;
     }
 
-    public void setArmPosition45Degrees() {
-        setArmPositionRadians(Math.PI/4);
-    }
-    public void setArmPosition0Degrees() {
-        setArmPositionRadians(0);
-    }
-
     private void setArmRadiansPerSecond(double targetRadiansPerSecond) {
 
         //TODO: INCORPORATE CUSTOM POSITION FEEDBACK RATHER THAN USING PIDCONTROLLER INTEGRAL IN ORDER TO AVOID INTEGRAL WINDUP
@@ -119,6 +112,14 @@ public class Arm extends SubsystemBase {
         }
 
         io.setArmVoltage(totalOutputVolts);
+    }
+
+    /**
+     * positive voltage moves arm forward
+     * @param volts
+     */
+    public void setArmVolts(double volts) {
+        io.setArmVoltage(volts);
     }
 
     /**
@@ -151,6 +152,14 @@ public class Arm extends SubsystemBase {
 
     public boolean atSetpoint() {
         return !isMovingToTarget;
+    }
+
+    public boolean atBackLimitSwitch() {
+        return inputs.atBackLimitSwitch;
+    }
+
+    public double getAverageArmCurrentDraw() {
+        return ((inputs.leftPivotMotorArmCurrentAmps + inputs.rightPivotMotorArmCurrentAmps) / 2);
     }
 
     @Override

@@ -15,8 +15,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.commands.intake.ShootCube;
 import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.drive.Drivetrain;
+import frc.robot.subsystems.intake.Intake;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -25,7 +28,9 @@ public class AutoRoutine extends SequentialCommandGroup {
   /** Creates a new AutoRoutine. */
   public AutoRoutine(
       List<PathPlannerTrajectory> pathGroup, 
-      Drivetrain drivetrain, 
+      Drivetrain drivetrain,
+      Arm arm,
+      Intake intake,
       Vision vision 
     ) {
 
@@ -35,6 +40,9 @@ public class AutoRoutine extends SequentialCommandGroup {
     eventMap.put("waitOneSecond", new WaitCommand(1));
     
     eventMap.put("autoBalance", new AutoBalance(drivetrain));
+
+  // SCORING
+    eventMap.put("shootCubeHigh", new ShootCube(arm, intake, -6, -12));
 
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
       drivetrain::getEstimatorPoseMeters,

@@ -5,5 +5,10 @@
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/SendableChooser[0]": "String Chooser"
     }
+  },
+  "NetworkTables": {
+    "Transitory Values": {
+      "open": false
+    }
   }
 }
