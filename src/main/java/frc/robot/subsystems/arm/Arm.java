@@ -162,6 +162,10 @@ public class Arm extends SubsystemBase {
         return ((inputs.leftPivotMotorArmCurrentAmps + inputs.rightPivotMotorArmCurrentAmps) / 2);
     }
 
+    public void setToBreakMode(boolean isInBreak) {
+        io.setToBreakMode(isInBreak);
+    }
+
     @Override
     public void periodic() {
 

@@ -37,7 +37,7 @@ public class IntakeCubes extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     intake.setMotorVolts(0, 0);
-    arm.setArmPositionRadians(Constants.Arm.maxAngleRadians);
+    // arm.setArmPositionRadians(Constants.Arm.targetMaxAngleRadians);
   }
 
   // Returns true when the command should end.

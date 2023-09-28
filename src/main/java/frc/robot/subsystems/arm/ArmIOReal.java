@@ -6,6 +6,7 @@ package frc.robot.subsystems.arm;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
@@ -84,6 +85,17 @@ public class ArmIOReal implements ArmIO {
   public void setArmPosition(double positionRadians) {
     mLeftPivotEncoder.setPosition(positionRadians);
     mRightPivotEncoder.setPosition(positionRadians);
+  }
+
+  public void setToBreakMode(boolean isInBreak) {
+    if(isInBreak) {
+      mLeftPivotMotor.setIdleMode(IdleMode.kBrake);
+      mRightPivotMotor.setIdleMode(IdleMode.kBrake);
+    }
+    else {
+      mLeftPivotMotor.setIdleMode(IdleMode.kCoast);
+      mRightPivotMotor.setIdleMode(IdleMode.kCoast);
+    }
   }
 
   @Override

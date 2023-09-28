@@ -24,12 +24,14 @@ public class ArmIdle extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!arm.atBackLimitSwitch()) {
-      // TODO: test this
-      arm.setArmVolts(-0.5);
-    }
-    else {
-      arm.setArmVolts(0);
+    if(arm.getAverageArmCurrentDraw() <= 30) {
+      if(!arm.atBackLimitSwitch()) {
+        // TODO: test this
+        arm.setArmVolts(0.5);
+      }
+      else {
+        arm.setArmVolts(0);
+      }
     }
   }
 

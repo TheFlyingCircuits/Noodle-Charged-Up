@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.arm.ArmIdle;
+import frc.robot.commands.arm.SetArmToPosition;
 import frc.robot.commands.autonomous.AutoRoutine;
 import frc.robot.commands.drivetrain.JoystickDrive;
 import frc.robot.commands.intake.IntakeCubes;
@@ -123,7 +124,8 @@ public class RobotContainer {
     configureBindings();
 
     drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, true));
-    // arm.setDefaultCommand(new ArmIdle(arm));
+    // arm.setDefaultCommand(new SetArmToPosition(arm, 0));
+    arm.setDefaultCommand(new ArmIdle(arm));
   }
 
   private void configureBindings() {
@@ -132,8 +134,13 @@ public class RobotContainer {
     // controller.button(2).onTrue(new InstantCommand(arm::setArmPosition0Degrees));
 
     //intake
-    controller.rightTrigger().whileTrue(new IntakeCubes(intake, arm));
-    controller.leftTrigger().whileTrue(new ReverseIntake(arm, intake));
+    controller.rightTrigger().whileTrue(
+      new IntakeCubes(intake, arm)).onFalse(
+        new SetArmToPosition(arm, Constants.Arm.targetMaxAngleRadians//).andThen(
+          // new ArmIdle(arm).withTimeout(1)
+        ).withTimeout(3)
+      );
+    controller.leftTrigger().whileTrue(new ReverseIntake(arm, intake));//.onFalse(new SetArmToPosition(arm, Constants.Arm.targetMaxAngleRadians).andThen(new ArmIdle(arm).withTimeout(1)));
 
     //MID SHOT
     //TODO: test these voltages

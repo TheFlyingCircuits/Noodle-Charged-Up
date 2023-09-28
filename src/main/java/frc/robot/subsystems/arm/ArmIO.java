@@ -35,5 +35,7 @@ public interface ArmIO {
 
     public default void setArmPosition(double positionRadians) {}
 
+    public default void setToBreakMode(boolean isInBreak) {}
+
 
 }
