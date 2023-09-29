@@ -70,7 +70,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void disabledInit() {
-    m_robotContainer.arm.setToBreakMode(false);
+    m_robotContainer.arm.setToBrakeMode(false);
   }
 
   @Override
@@ -85,7 +85,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void disabledExit() {
-    m_robotContainer.arm.setToBreakMode(true);
+    m_robotContainer.arm.setToBrakeMode(true);
   }
 
   @Override

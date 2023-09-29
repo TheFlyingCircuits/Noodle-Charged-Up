@@ -4,22 +4,26 @@
 
 package frc.robot.commands.intake;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.intake.Intake;
 
 public class ReverseIntake extends CommandBase {
   /** Creates a new ReverseIntake. */
   private Intake intake;
+  private Arm arm;
   
-  public ReverseIntake(Intake intake) {
-    addRequirements(intake);
+  public ReverseIntake(Intake intake, Arm arm) {
+    addRequirements(intake, arm);
     this.intake = intake;
+    this.arm = arm;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // arm.setArmPositionRadians(Constants.Arm.reverseIntakeAngleRadians);
     intake.setMotorVolts(-1.5, -1.5);
   }
 
@@ -31,7 +35,6 @@ public class ReverseIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     intake.setMotorVolts(0, 0);
-    // arm.setArmPositionRadians(Constants.Arm.maxAngleRadians);
   }
 
   // Returns true when the command should end.

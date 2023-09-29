@@ -30,7 +30,7 @@ public class Arm extends SubsystemBase {
     private boolean isMovingToTarget;
     private double setpointRadians;
 
-    private TrapezoidProfile.Constraints motionConstraints;
+    private boolean hasBeenHomed = false;
 
     private Mechanism2d mech;
     private MechanismRoot2d mechRoot;
@@ -62,9 +62,6 @@ public class Arm extends SubsystemBase {
                 Constants.Arm.KaVoltsPerRadianPerSecondSquared);
 
         this.timer = new Timer();
-        this.motionConstraints = new TrapezoidProfile.Constraints(
-            Constants.Arm.maxDesiredVelocityRadiansPerSecond,
-            Constants.Arm.maxDesiredAccelerationRadiansPerSecond);
 
 
         mech = new Mechanism2d(Constants.Arm.armWidthMeters, Constants.Arm.armLengthMeters);
@@ -81,7 +78,7 @@ public class Arm extends SubsystemBase {
         this.setpointRadians = setpointRadians;
 
         trapezoidProfile = new TrapezoidProfile(
-            motionConstraints,
+            Constants.Arm.motionConstraints,
             new TrapezoidProfile.State(
                 setpointRadians, 0.0
             ),
@@ -158,24 +155,31 @@ public class Arm extends SubsystemBase {
         return ((inputs.leftPivotMotorArmCurrentAmps + inputs.rightPivotMotorArmCurrentAmps) / 2);
     }
 
-    public void setToBreakMode(boolean isInBreak) {
-        io.setToBreakMode(isInBreak);
+    public void setToBrakeMode(boolean isInBreak) {
+        io.setToBrakeMode(isInBreak);
     }
 
     @Override
     public void periodic() {
 
         if (inputs.atBackLimitSwitch) {
-            io.setArmPosition(Constants.Arm.maxAngleRadians);
+            io.setArmEncoderPosition(Constants.Arm.maxAngleRadians);
+            hasBeenHomed = true;
         }
 
         io.updateInputs(inputs);
-        followTrapezoidProfile();
+
+        if (!hasBeenHomed) {
+            io.setArmVoltage(1.0);
+        }
+        else {
+            followTrapezoidProfile();
+        }
+
 
         mechArm.setAngle(inputs.armPosition.getDegrees());
 
         Logger.getInstance().processInputs("Arm", inputs);
-
         Logger.getInstance().recordOutput("/arm/mechanism2d", mech);
 
     }

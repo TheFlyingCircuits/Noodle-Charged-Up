@@ -33,9 +33,13 @@ public interface ArmIO {
      */
     public default void setArmVoltage(double volts) {}
 
-    public default void setArmPosition(double positionRadians) {}
+    /**
+     * Recalibrates the current encoder position so that it reads the position fed to this method. This is used when homing the arm when it touches the limit switch.
+     * @param positionRadians - Position in radians that the arm is currently at.
+     */
+    public default void setArmEncoderPosition(double positionRadians) {}
 
-    public default void setToBreakMode(boolean isInBreak) {}
+    public default void setToBrakeMode(boolean isInBrake) {}
 
 
 }

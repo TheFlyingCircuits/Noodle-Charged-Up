@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.arm.ArmIdle;
 import frc.robot.commands.arm.SetArmToPosition;
 import frc.robot.commands.autonomous.AutoRoutine;
 import frc.robot.commands.drivetrain.JoystickDrive;
@@ -125,25 +124,19 @@ public class RobotContainer {
     configureBindings();
 
     drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, true));
-    // arm.setDefaultCommand(new SetArmToPosition(arm, 0));
-    // arm.setDefaultCommand(new ArmIdle(arm));
+    arm.setDefaultCommand(new SetArmToPosition(arm, Constants.Arm.maxAngleRadians));
   }
 
   private void configureBindings() {
     controller.y().onTrue(new InstantCommand(drivetrain::zeroYaw));
-    // controller.button(1).onTrue(new InstantCommand(arm::setArmPosition45Degrees));
-    // controller.button(2).onTrue(new InstantCommand(arm::setArmPosition0Degrees));
 
     //intake
-    controller.rightTrigger().whileTrue(
-      new IntakeCubes(intake, arm)).onFalse(
-        new SetArmToPosition(arm, Constants.Arm.maxAngleRadians)
-        );
-    controller.leftTrigger().whileTrue(new ReverseIntake(intake));
+    controller.rightTrigger().whileTrue(new IntakeCubes(intake, arm));
+    controller.leftTrigger().whileTrue(new ReverseIntake(intake, arm));
 
     //MID SHOT
-    //TODO: test these voltages
-    controller.rightBumper().whileTrue(new ShootCube(arm, intake, -4, -6));
+    //TODO: test these voltages on the field
+    controller.rightBumper().whileTrue(new ShootCube(arm, intake, -3, -5));
 
     //HIGH SHOT
     controller.leftBumper().whileTrue(new ShootCube(arm, intake, -6, -12));

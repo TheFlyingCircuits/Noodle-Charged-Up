@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 
 /** Add your docs here. */
@@ -214,16 +215,17 @@ public class Constants {
 
     public final static class Arm {
         public static final double minAngleRadians = Units.degreesToRadians(-5);
-        public static final double startingAngleRadians = Units.degreesToRadians(153);
-        public static final double maxAngleRadians = Units.degreesToRadians(153);
-        public static final double targetMaxAngleRadians = Units.degreesToRadians(145);
-        public static final double reverseIntakeAngleRadians = Units.degreesToRadians(75);
+        public static final double maxAngleRadians = Units.degreesToRadians(144);
 
         public static final double armWidthMeters = Units.inchesToMeters(50);
         public static final double armLengthMeters = Units.inchesToMeters(50);
         
-        public static final double maxDesiredAccelerationRadiansPerSecond = 5.0;//1;//3;
-        public static final double maxDesiredVelocityRadiansPerSecond = 4.0;//1;//7;
+        public static final double maxDesiredAccelerationRadiansPerSecond = 6.0;//1;//3;
+        public static final double maxDesiredVelocityRadiansPerSecond = 7.0;//1;//7;
+
+        public static final Constraints motionConstraints = new Constraints(
+            Constants.Arm.maxDesiredVelocityRadiansPerSecond,
+            Constants.Arm.maxDesiredAccelerationRadiansPerSecond);
 
         public static final double gearReduction = 105;
         // motors
@@ -237,22 +239,13 @@ public class Constants {
         //PID
 
         public static final double KpVoltsPerRadianPerSecond = 0.510;
-        public static final double KiVoltsPerRadian = 0.5; //TODO: INCREASE THIS?
+        public static final double KiVoltsPerRadian = 0.7; 
         public static final double KdVoltsPerRadianPerSecondSquared = 0.00;
 
         public static final double KsVolts = 0.062;
         public static final double KgVolts = 0.455;//0.33 FOR SIM;
         public static final double KvVoltsPerRadianPerSecond = 1.073;//1 FOR SIM;
         public static final double KaVoltsPerRadianPerSecondSquared = 0.024;
-
-
-        public static final double intakePositionRadians = Units.degreesToRadians(0.00);
-        public static final double lowPositionRadians = Units.degreesToRadians(0.00);
-        public static final double midPositionRadians = Units.degreesToRadians(0.00);
-        public static final double highPositionRadians = Units.degreesToRadians(0.00);
-        public static final double defaultPositionRadians = Units.degreesToRadians(0.00);
-
-
     }
 
     public static class Controller {

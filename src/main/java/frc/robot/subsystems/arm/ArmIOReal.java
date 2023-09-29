@@ -67,8 +67,8 @@ public class ArmIOReal implements ArmIO {
     mLeftPivotMotor.setIdleMode(Constants.Arm.pivotIdleMode);
     mRightPivotMotor.setIdleMode(Constants.Arm.pivotIdleMode);
 
-    mLeftPivotEncoder.setPosition(Constants.Arm.startingAngleRadians);
-    mRightPivotEncoder.setPosition(Constants.Arm.startingAngleRadians);
+    mLeftPivotEncoder.setPosition(Constants.Arm.maxAngleRadians);
+    mRightPivotEncoder.setPosition(Constants.Arm.maxAngleRadians);
 
     mLeftPivotMotor.burnFlash();
     mRightPivotMotor.burnFlash();
@@ -81,12 +81,12 @@ public class ArmIOReal implements ArmIO {
   }
 
   @Override
-  public void setArmPosition(double positionRadians) {
+  public void setArmEncoderPosition(double positionRadians) {
     mLeftPivotEncoder.setPosition(positionRadians);
     mRightPivotEncoder.setPosition(positionRadians);
   }
 
-  public void setToBreakMode(boolean isInBreak) {
+  public void setToBrakeMode(boolean isInBreak) {
     if(isInBreak) {
       mLeftPivotMotor.setIdleMode(IdleMode.kBrake);
       mRightPivotMotor.setIdleMode(IdleMode.kBrake);

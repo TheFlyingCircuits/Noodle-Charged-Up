@@ -45,7 +45,6 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
         configDriveMotor();
     }
 
-    //TODO: i hope this is correct usage of @override? simon pls check
     @Override
     public void updateInputs(SwerveModuleIOInputs inputs) {
         inputs.drivePositionMeters = mDriveEncoder.getPosition();
