@@ -5,6 +5,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
@@ -52,7 +53,7 @@ public class Arm extends SubsystemBase {
         
         this.velocityController = new PIDController(
                 Constants.Arm.KpVoltsPerRadianPerSecond,
-                Constants.Arm.KiVoltsPerRadian,
+                0,
                 Constants.Arm.KdVoltsPerRadianPerSecondSquared);
 
         this.feedforward = new ArmFeedforward(
@@ -94,11 +95,20 @@ public class Arm extends SubsystemBase {
 
     private void setArmRadiansPerSecond(double targetRadiansPerSecond) {
 
-        //TODO: INCORPORATE CUSTOM POSITION FEEDBACK RATHER THAN USING PIDCONTROLLER INTEGRAL IN ORDER TO AVOID INTEGRAL WINDUP
+        //currently this only incorporates the p gain (velocity rad/s)
         double pidOutputVolts = velocityController.calculate(inputs.armVelocityRadiansPerSecond, targetRadiansPerSecond);
         double feedforwardOutputVolts = feedforward.calculate(inputs.armPosition.getRadians(), targetRadiansPerSecond);
 
-        double totalOutputVolts = pidOutputVolts + feedforwardOutputVolts;
+
+        double positionFeedbackVolts = 0;
+        //incorporate position feedback
+        if (trapezoidProfile != null) {
+            Rotation2d targetPosition = new Rotation2d(trapezoidProfile.calculate(timer.get()).position);
+            Rotation2d positionError = targetPosition.minus(inputs.armPosition);
+            positionFeedbackVolts = Constants.Arm.KiVoltsPerRadian * positionError.getRadians();
+        }
+
+        double totalOutputVolts = pidOutputVolts + feedforwardOutputVolts + positionFeedbackVolts;
 
         if ((inputs.atBackLimitSwitch && totalOutputVolts > 0) || (inputs.atFrontLimitSwitch && totalOutputVolts < 0)) {
             totalOutputVolts = 0;

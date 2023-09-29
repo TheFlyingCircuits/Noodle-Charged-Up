@@ -238,8 +238,8 @@ public class Constants {
 
         //PID
 
-        public static final double KpVoltsPerRadianPerSecond = 0.510;
-        public static final double KiVoltsPerRadian = 0.7; 
+        public static final double KpVoltsPerRadianPerSecond = 0.6;
+        public static final double KiVoltsPerRadian = 8.0; //only used in our homemade position feedback, since integral noise is too bad to use built in pidcontroller
         public static final double KdVoltsPerRadianPerSecondSquared = 0.00;
 
         public static final double KsVolts = 0.062;
