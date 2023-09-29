@@ -11,7 +11,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
@@ -22,7 +21,7 @@ public class ArmIOReal implements ArmIO {
   private CANSparkMax mRightPivotMotor;
   private RelativeEncoder mLeftPivotEncoder;
   private RelativeEncoder mRightPivotEncoder;
-  private DigitalInput frontLimitSwitch;
+  // private DigitalInput frontLimitSwitch;
   private DigitalInput backLimitSwitch;
 
   public ArmIOReal() {

@@ -28,10 +28,6 @@ public class ArmIOSim implements ArmIO {
 
         public ArmIOSim() {
             System.out.println("[Init] Creating " + this.getClass().getName());
-            // revPhysicsSim = REVPhysicsSim.getInstance();
-            
-            // revPhysicsSim.addSparkMax(null, DCMotor.getNeo550(1));
-
         }
 
     public void setArmVoltage(double volts) {

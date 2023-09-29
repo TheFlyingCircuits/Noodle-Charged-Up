@@ -4,7 +4,9 @@
 
 package frc.robot.commands.arm;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.arm.Arm;
 
 public class ArmIdle extends CommandBase {
@@ -24,14 +26,19 @@ public class ArmIdle extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(arm.getAverageArmCurrentDraw() <= 30) {
-      if(!arm.atBackLimitSwitch()) {
-        // TODO: test this
-        arm.setArmVolts(0.5);
+    if(arm.getArmPosition() <= Units.degreesToRadians(90)) {
+      if(arm.getAverageArmCurrentDraw() <= 30) {
+        if(!arm.atBackLimitSwitch()) {
+          // TODO: test this
+          arm.setArmVolts(0.5);
+        }
+        else {
+          arm.setArmVolts(0);
+        }
       }
-      else {
-        arm.setArmVolts(0);
-      }
+    }
+    else {
+      arm.setArmPositionRadians(Constants.Arm.maxAngleRadians);
     }
   }
 

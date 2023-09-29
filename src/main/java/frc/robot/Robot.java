@@ -69,7 +69,9 @@ public class Robot extends LoggedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    m_robotContainer.arm.setToBreakMode(false);
+  }
 
   @Override
   public void disabledPeriodic() {
@@ -82,7 +84,9 @@ public class Robot extends LoggedRobot {
   }
 
   @Override
-  public void disabledExit() {}
+  public void disabledExit() {
+    m_robotContainer.arm.setToBreakMode(true);
+  }
 
   @Override
   public void autonomousInit() {

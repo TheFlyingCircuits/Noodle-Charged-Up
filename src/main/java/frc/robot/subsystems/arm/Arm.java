@@ -27,8 +27,6 @@ public class Arm extends SubsystemBase {
     private TrapezoidProfile trapezoidProfile;
 
     private final Timer timer;
-    private double lastTime;
-
     private boolean isMovingToTarget;
     private double setpointRadians;
 
@@ -64,8 +62,6 @@ public class Arm extends SubsystemBase {
                 Constants.Arm.KaVoltsPerRadianPerSecondSquared);
 
         this.timer = new Timer();
-        this.lastTime = 0.0;
-
         this.motionConstraints = new TrapezoidProfile.Constraints(
             Constants.Arm.maxDesiredVelocityRadiansPerSecond,
             Constants.Arm.maxDesiredAccelerationRadiansPerSecond);

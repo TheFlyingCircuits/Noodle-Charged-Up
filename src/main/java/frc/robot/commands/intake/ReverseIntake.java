@@ -5,19 +5,14 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.intake.Intake;
 
 public class ReverseIntake extends CommandBase {
   /** Creates a new ReverseIntake. */
-  private Arm arm;
   private Intake intake;
   
-  public ReverseIntake(Arm arm, Intake intake) {
-    addRequirements(arm);
+  public ReverseIntake(Intake intake) {
     addRequirements(intake);
-    this.arm = arm;
     this.intake = intake;
   }
 

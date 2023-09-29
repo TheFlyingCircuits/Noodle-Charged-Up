@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -125,7 +126,7 @@ public class RobotContainer {
 
     drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, true));
     // arm.setDefaultCommand(new SetArmToPosition(arm, 0));
-    arm.setDefaultCommand(new ArmIdle(arm));
+    // arm.setDefaultCommand(new ArmIdle(arm));
   }
 
   private void configureBindings() {
@@ -136,11 +137,9 @@ public class RobotContainer {
     //intake
     controller.rightTrigger().whileTrue(
       new IntakeCubes(intake, arm)).onFalse(
-        new SetArmToPosition(arm, Constants.Arm.targetMaxAngleRadians//).andThen(
-          // new ArmIdle(arm).withTimeout(1)
-        ).withTimeout(3)
-      );
-    controller.leftTrigger().whileTrue(new ReverseIntake(arm, intake));//.onFalse(new SetArmToPosition(arm, Constants.Arm.targetMaxAngleRadians).andThen(new ArmIdle(arm).withTimeout(1)));
+        new SetArmToPosition(arm, Constants.Arm.maxAngleRadians).repeatedly().until(() -> arm.getArmPosition() >= Units.degreesToRadians(135))
+        );
+    controller.leftTrigger().whileTrue(new ReverseIntake(intake));
 
     //MID SHOT
     //TODO: test these voltages
@@ -148,11 +147,6 @@ public class RobotContainer {
 
     //HIGH SHOT
     controller.leftBumper().whileTrue(new ShootCube(arm, intake, -6, -12));
-
-    // controller.povDown()
-    
-    // controller.povUp().whileTrue(new ShuffleboardRunWheelsAtVolt(intake));
-    // controller.povDown().whileTrue(new ShuffleboardSetArmToPosition(arm));
   }
 
   public Command getAutonomousCommand() {
