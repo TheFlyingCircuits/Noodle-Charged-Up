@@ -26,7 +26,7 @@ public class ArmIdle extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(arm.getArmPosition() <= Units.degreesToRadians(90)) {
+    if(arm.getArmPosition() <= Units.degreesToRadians(110)) {
       if(arm.getAverageArmCurrentDraw() <= 30) {
         if(!arm.atBackLimitSwitch()) {
           // TODO: test this

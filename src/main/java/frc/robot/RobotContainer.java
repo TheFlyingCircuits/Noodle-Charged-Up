@@ -137,7 +137,7 @@ public class RobotContainer {
     //intake
     controller.rightTrigger().whileTrue(
       new IntakeCubes(intake, arm)).onFalse(
-        new SetArmToPosition(arm, Constants.Arm.maxAngleRadians).repeatedly().until(() -> arm.getArmPosition() >= Units.degreesToRadians(135))
+        new SetArmToPosition(arm, Constants.Arm.maxAngleRadians)
         );
     controller.leftTrigger().whileTrue(new ReverseIntake(intake));
 

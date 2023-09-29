@@ -11,6 +11,7 @@ public class SetArmToPosition extends CommandBase {
   private Arm arm;
   private double setpoint;
   public SetArmToPosition(Arm arm, double setpointRadians) {
+    addRequirements(arm);
     this.arm = arm;
     this.setpoint = setpointRadians;
   }
