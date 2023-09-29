@@ -21,7 +21,7 @@
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "deadline",
-        "waitTime": 2.0
+        "waitTime": 1.0
       }
     },
     {

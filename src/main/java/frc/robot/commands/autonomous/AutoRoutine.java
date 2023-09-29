@@ -42,7 +42,7 @@ public class AutoRoutine extends SequentialCommandGroup {
     eventMap.put("autoBalance", new AutoBalance(drivetrain));
 
   // SCORING
-    eventMap.put("shootCubeHigh", new ShootCube(arm, intake, -6, -12));
+    eventMap.put("shootCubeHigh", new ShootCube(arm, intake, -6, -12).withTimeout(0.5));
 
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
       drivetrain::getEstimatorPoseMeters,
