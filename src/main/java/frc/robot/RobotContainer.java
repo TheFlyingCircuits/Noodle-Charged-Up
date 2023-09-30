@@ -134,12 +134,12 @@ public class RobotContainer {
     controller.rightTrigger().whileTrue(new IntakeCubes(intake, arm));
     controller.rightBumper().whileTrue(new ReverseIntake(intake, arm));
 
-    //MID SHOT
-    //TODO: test these voltages on the field
-    controller.leftTrigger().whileTrue(new ShootCube(arm, intake, -3, -5));
-
     //HIGH SHOT
-    controller.leftBumper().whileTrue(new ShootCube(arm, intake, -6, -12));
+    //TODO: test these voltages on the field
+    controller.leftTrigger().whileTrue(new ShootCube(arm, intake, -6, -12));
+
+    //MID SHOT
+    controller.leftBumper().whileTrue(new ShootCube(arm, intake, -3, -5));
   }
 
   public Command getAutonomousCommand() {
