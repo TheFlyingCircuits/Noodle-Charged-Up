@@ -60,6 +60,7 @@ public class RobotContainer {
     autoChooser.setDefaultOption("noodle path", "noodle path");
     autoChooser.addOption("noodle balance barrier", "noodle balance barrier");
     autoChooser.addOption("noodle balance wireguard", "noodle balance wireguard");
+    autoChooser.addOption("just score", "just score");
 
     if (RobotBase.isReal()) {
       System.out.println("[Init] Creating Real Robot");
