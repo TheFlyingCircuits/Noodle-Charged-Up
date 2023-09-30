@@ -11,10 +11,13 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.SerialPort.Port;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.arm.SetArmToPosition;
+import frc.robot.commands.autonomous.AutoBalance;
 import frc.robot.commands.autonomous.AutoRoutine;
 import frc.robot.commands.drivetrain.JoystickDrive;
 import frc.robot.commands.intake.IntakeCubes;
@@ -50,8 +53,13 @@ public class RobotContainer {
   public final Vision vision;
   public final Arm arm;
   public final Intake intake;
+  public final SendableChooser<String> autoChooser = new SendableChooser<>();
 
   public RobotContainer() {
+
+    autoChooser.setDefaultOption("noodle path", "noodle path");
+    autoChooser.addOption("noodle balance barrier", "noodle balance barrier");
+    autoChooser.addOption("noodle balance wireguard", "noodle balance wireguard");
 
     if (RobotBase.isReal()) {
       System.out.println("[Init] Creating Real Robot");
@@ -98,7 +106,8 @@ public class RobotContainer {
 
       arm = new Arm(new ArmIOSim());
 
-      intake = new Intake(new IntakeIO() {});
+      intake = new Intake(new IntakeIO() {
+      });
 
     } else {
       drivetrain = new Drivetrain(
@@ -116,34 +125,39 @@ public class RobotContainer {
       vision = new Vision(new VisionIO() {
       });
 
-      arm = new Arm(new ArmIO() {});
+      arm = new Arm(new ArmIO() {
+      });
 
-      intake = new Intake(new IntakeIO() {});
+      intake = new Intake(new IntakeIO() {
+      });
     }
 
     configureBindings();
 
     drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, true));
     arm.setDefaultCommand(new SetArmToPosition(arm, Constants.Arm.maxAngleRadians));
+
+    SmartDashboard.putData(autoChooser);
+
   }
 
   private void configureBindings() {
     controller.y().onTrue(new InstantCommand(drivetrain::zeroYaw));
 
-    //intake
+    // intake
     controller.rightTrigger().whileTrue(new IntakeCubes(intake, arm));
     controller.rightBumper().whileTrue(new ReverseIntake(intake, arm));
 
-    //HIGH SHOT
-    //TODO: test these voltages on the field
+    // HIGH SHOT
+    // TODO: test these voltages on the field
     controller.leftTrigger().whileTrue(new ShootCube(arm, intake, -6, -12));
 
-    //MID SHOT
+    // MID SHOT
     controller.leftBumper().whileTrue(new ShootCube(arm, intake, -3, -5));
   }
 
   public Command getAutonomousCommand() {
-    return new InstantCommand(drivetrain::setPose2D180).andThen(
+    return new InstantCommand(drivetrain::setGyroscope180).andThen(
         new AutoRoutine(pathGroup, drivetrain, arm, intake, vision));
   }
 }

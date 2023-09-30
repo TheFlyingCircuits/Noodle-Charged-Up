@@ -20,7 +20,7 @@
           "shootCubeHigh"
         ],
         "executionBehavior": "parallel",
-        "waitBehavior": "deadline",
+        "waitBehavior": "none",
         "waitTime": 1.0
       }
     },

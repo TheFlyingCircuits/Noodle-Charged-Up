@@ -22,6 +22,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.vision.Vision;
@@ -107,6 +108,19 @@ public class Drivetrain extends SubsystemBase {
             Rotation2d.fromDegrees(0)));
   }
 
+
+    /**
+   * Sets the gyroscope angle adjustment to be 180.
+   * <br>
+   * In other words, if the robot is facing towards the grid, calling this method will field orient it.
+   */
+  public void setGyroscope180() {
+    gyroIO.zeroYaw();
+    gyroIO.setAngleAdjustment(180);
+
+    swerveOdometry.resetPosition(getRobotRotation2d(), getModulePositions(), getPoseMeters());
+  }
+
   /**
    * Zeros the robot gyro and then adds 180 degrees (or pi radians) to the robot's rotation pose
    * <br>
@@ -145,7 +159,7 @@ public class Drivetrain extends SubsystemBase {
    *         positive if the front of the robot is raised.
    */
   public double getRobotPitchDegrees() {
-    return gyroInputs.robotPitchDegrees;
+    return -gyroInputs.robotPitchDegrees;
   }
 
   /**
@@ -159,7 +173,7 @@ public class Drivetrain extends SubsystemBase {
    */
   public double getRobotRollDegrees() {
     // Since navx is mounted silly and also axis convention this is correct.
-    return gyroInputs.robotRollDegrees;
+    return -gyroInputs.robotRollDegrees;
   }
 
   /**
@@ -359,6 +373,8 @@ public class Drivetrain extends SubsystemBase {
     updateOdometry();
 
     updatePoseEstimator();
+    SmartDashboard.putNumber("pitch deg", getRobotPitchDegrees());
+    SmartDashboard.putNumber("roll deg", getRobotRollDegrees());
 
     Logger.getInstance().recordOutput("drivetrain/odometryPose2d", getPoseMeters());
     Logger.getInstance().recordOutput("drivetrain/poseEstimatorPose2d", getEstimatorPoseMeters());
