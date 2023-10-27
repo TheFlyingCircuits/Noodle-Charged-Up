@@ -80,7 +80,7 @@ public class Constants {
          * This value will be less than or equal to the
          * maxAchievableVelocityMetersPerSecond, depending on driver preference.
          */
-        public static final double maxDesiredTeleopVelocityMetersPerSecond = 4.3;
+        public static final double maxDesiredTeleopVelocityMetersPerSecond = 1;
 
         /**
          * The maximum achievable angular velocity of the robot in radians per second.
@@ -99,7 +99,7 @@ public class Constants {
          * <br>
          * This value will be tuned based off of driver preference.
          */
-        public static final double maxDesiredAngularVelocityRadiansPerSecond = 5.4;
+        public static final double maxDesiredAngularVelocityRadiansPerSecond = .4;
 
         public static final double maxDesiredDriverAccel = 27.27;
 
@@ -118,7 +118,7 @@ public class Constants {
          * All values are relative to the front left corner configuration.
          */
         public static final class CANCoderOffsets {
-            public static final double one = 210.43;//0;//85.693;
+            public static final double one = 210.43;// 0;//85.693;
             public static final double two = 108.896;
             public static final double three = 17.23 - 90;
             public static final double four = 0;
@@ -219,13 +219,13 @@ public class Constants {
 
         public static final double armWidthMeters = Units.inchesToMeters(50);
         public static final double armLengthMeters = Units.inchesToMeters(50);
-        
-        public static final double maxDesiredAccelerationRadiansPerSecond = 6.0;//1;//3;
-        public static final double maxDesiredVelocityRadiansPerSecond = 7.0;//1;//7;
+
+        public static final double maxDesiredAccelerationRadiansPerSecond = 6.0;// 1;//3;
+        public static final double maxDesiredVelocityRadiansPerSecond = 7.0;// 1;//7;
 
         public static final Constraints motionConstraints = new Constraints(
-            Constants.Arm.maxDesiredVelocityRadiansPerSecond,
-            Constants.Arm.maxDesiredAccelerationRadiansPerSecond);
+                Constants.Arm.maxDesiredVelocityRadiansPerSecond,
+                Constants.Arm.maxDesiredAccelerationRadiansPerSecond);
 
         public static final double gearReduction = 105;
         // motors
@@ -236,15 +236,16 @@ public class Constants {
         public static final double pivotMotorContinuousCurrentLimit = 20;
         public static final IdleMode pivotIdleMode = IdleMode.kBrake;
 
-        //PID
+        // PID
 
         public static final double KpVoltsPerRadianPerSecond = 0.6;
-        public static final double KiVoltsPerRadian = 8.0; //only used in our homemade position feedback, since integral noise is too bad to use built in pidcontroller
+        public static final double KiVoltsPerRadian = 8.0; // only used in our homemade position feedback, since
+                                                           // integral noise is too bad to use built in pidcontroller
         public static final double KdVoltsPerRadianPerSecondSquared = 0.00;
 
         public static final double KsVolts = 0.062;
-        public static final double KgVolts = 0.455;//0.33 FOR SIM;
-        public static final double KvVoltsPerRadianPerSecond = 1.073;//1 FOR SIM;
+        public static final double KgVolts = 0.455;// 0.33 FOR SIM;
+        public static final double KvVoltsPerRadianPerSecond = 1.073;// 1 FOR SIM;
         public static final double KaVoltsPerRadianPerSecondSquared = 0.024;
     }
 

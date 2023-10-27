@@ -18,10 +18,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.LoggerMode;
 
-
 public class Robot extends LoggedRobot {
-  //turn this true to use the simulator!!
-  public LoggerMode robotMode = LoggerMode.ROBOT_REAL_LOGGED;
+  // turn this true to use the simulator!!
+  public LoggerMode robotMode = LoggerMode.ROBOT_REAL;
 
   private Command m_autonomousCommand;
 
@@ -32,11 +31,13 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotInit() {
     System.out.println("[Init] Creating " + this.getClass().getName());
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+    // Instantiate our RobotContainer. This will perform all our button bindings,
+    // and put our
     // autonomous chooser on the dashboard.
 
     System.out.println("Ghost Buster 10 second wait started!");
-    if (isReal()) Timer.delay(10); // Ghost Busters! Make sure everything has time to power up before initializing
+    if (isReal())
+      Timer.delay(10); // Ghost Busters! Make sure everything has time to power up before initializing
 
     Logger.getInstance().recordMetadata("projectName", "Noodle-Charged-Up");
 
@@ -48,7 +49,7 @@ public class Robot extends LoggedRobot {
         Logger.getInstance().addDataReceiver(new NT4Publisher());
         break;
       case ROBOT_REAL_LOGGED:
-        Logger.getInstance().addDataReceiver(new WPILOGWriter("/home/lvuser/deploy/logs")); 
+        Logger.getInstance().addDataReceiver(new WPILOGWriter("/home/lvuser/deploy/logs"));
         Logger.getInstance().addDataReceiver(new NT4Publisher());
         break;
       case ROBOT_REPLAY:
@@ -70,22 +71,23 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void disabledInit() {
-    m_robotContainer.arm.setToBrakeMode(false);
+    // m_robotContainer.arm.setToBrakeMode(false);
   }
 
   @Override
   public void disabledPeriodic() {
     String path = m_robotContainer.autoChooser.getSelected();
-    if (path == null || previousPath.equals(path)) return;
+    if (path == null || previousPath.equals(path))
+      return;
 
     m_robotContainer.pathGroup = PathPlanner.loadPathGroup(
-      path, PathPlanner.getConstraintsFromPath(path));
+        path, PathPlanner.getConstraintsFromPath(path));
     previousPath = path;
   }
 
   @Override
   public void disabledExit() {
-    m_robotContainer.arm.setToBrakeMode(true);
+    // m_robotContainer.arm.setToBrakeMode(true);
   }
 
   @Override
@@ -98,10 +100,12 @@ public class Robot extends LoggedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   @Override
-  public void autonomousExit() {}
+  public void autonomousExit() {
+  }
 
   @Override
   public void teleopInit() {
@@ -111,10 +115,12 @@ public class Robot extends LoggedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+  }
 
   @Override
-  public void teleopExit() {}
+  public void teleopExit() {
+  }
 
   @Override
   public void testInit() {
@@ -122,16 +128,20 @@ public class Robot extends LoggedRobot {
   }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+  }
 
   @Override
-  public void testExit() {}
+  public void testExit() {
+  }
 
   /** This function is called once when the robot is first started up. */
   @Override
-  public void simulationInit() {}
+  public void simulationInit() {
+  }
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+  }
 }
